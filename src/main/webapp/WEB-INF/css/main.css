@@ -1,0 +1,136 @@
+@charset "UTF-8";
+
+* {
+	padding: 0;
+	margin: 0;
+	text-decoration: none;
+	color: #333;
+}
+
+li {
+	list-style: none;
+}
+
+input {
+	width: 100%;
+}
+
+#driverTestContainer {
+	display: flex;
+	margin: 10px 10px 0 10px;
+}
+
+#driverTestContainer section {
+	width: calc(100% - 33%);
+	margin: 0 10px;
+	height: 100px;
+}
+
+#driverTestContainer h1 {
+	font-size: 18px;
+	text-align: center;
+	margin: 20px 0;
+}
+
+#driverTestContainer h2, th {
+	background: #efefef;
+	font-size: 14px;
+	text-align: center;
+	padding: 7px;
+}
+
+#driverTestContainer .firstContents a, td a {
+	background-color: #F9F9F9;
+	text-align: center;
+	font-size: 14px;
+}
+
+#driverTestContainer table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+#driverTestContainer th:first-child {
+	width: 30%;
+	border-right: 1px solid lightgray;
+}
+
+#driverTestContainer td {
+	font-size: 14px;
+	border-bottom: 1px solid lightgray;
+}
+
+#driverTestContainer td:first-child {
+	text-align: center;
+	border-right: 1px solid lightgray;
+}
+
+#driverTestContainer .btnBox {
+	display: flex;
+}
+
+#driverTestContainer section .btnBox a {
+	width: 50%;
+	text-align: center;
+	padding: 7px;
+	background-color: #efefef;
+}
+
+#driverTestContainer section:nth-child(3) h1, .thirdContents {
+	display: none;
+}
+
+#driverTestContainer .thirdContents .testList {
+	flex: 1;
+	background-color: lightgray;
+}
+
+#driverTestContainer .thirdContents .testBoard {
+	background-color: darkgray;
+	flex: 2;
+}
+
+#driverTestContainer .thirdContents .testBoard>div.execBoard {
+	background-color: gray;
+}
+
+#driverTestContainer .thirdContents .contentBox {
+	display: flex;
+	height: 700px; /* 임시 */
+}
+
+#driverTestContainer .thirdContents li span {
+	text-align: center;
+	font-weight: bold;
+}
+
+#driverTestContainer .thirdContents .variableList, .actionList {
+	cursor: pointer;
+}
+
+#driverTestContainer .thirdContents .testBox input {
+	width: auto
+}
+
+/* 팝업 */
+#driverTestContainer .chooseVariablePopup {
+	position: absolute;
+	width: 600px;
+	background-color: #FFF;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	height: 400px;
+	border: 1px solid black;
+	display: none;
+}
+
+#driverTestContainer .popup .btnBox a {
+	padding: 10px;
+	cursor: pointer;
+}
+
+#driverTestContainer .popup .variableBox {
+	display: flex;
+	justify-content: space-around;
+}

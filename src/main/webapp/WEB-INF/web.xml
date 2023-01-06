@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	version="2.5">
+	<display-name>chromeDriverTestTool</display-name>
+
+	<!-- <welcome-file-list> -->
+	<!-- <welcome-file>index.html</welcome-file> -->
+	<!-- <welcome-file>index.htm</welcome-file> -->
+	<!-- <welcome-file>index.jsp</welcome-file> -->
+	<!-- <welcome-file>default.html</welcome-file> -->
+	<!-- <welcome-file>default.htm</welcome-file> -->
+	<!-- <welcome-file>default.jsp</welcome-file> -->
+	<!-- </welcome-file-list> -->
+
+	<!-- <servlet> 서블릿 클래스를 서블릿으로 등록 -->
+	<!-- <servlet-name>driverList</servlet-name> 해당 서블릿 참조할 때 사용할 이름 -->
+	<!-- <servlet-class>chromeDriverTestTool.web.DriverList</servlet-class> 
+		서블릿으로 사용할 서블릿 클래스의 fullname -->
+	<!-- </servlet> -->
+
+	<!-- <servlet-mapping> -->
+	<!-- <servlet-name>driverList</servlet-name> 매핑 서블릿 이름 -->
+	<!-- <url-pattern>/main</url-pattern> 매핑 url 패턴 -->
+	<!-- </servlet-mapping> -->
+
+	<!-- <servlet> -->
+	<!-- <servlet-name>driverPath</servlet-name> -->
+	<!-- <servlet-class>chromeDriverTestTool.web.DriverPath</servlet-class> -->
+	<!-- </servlet> -->
+
+	<!-- <servlet-mapping> -->
+	<!-- <servlet-name>driverPath</servlet-name> -->
+	<!-- <url-pattern>/getDriverPath</url-pattern> -->
+	<!-- </servlet-mapping> -->
+
+	<servlet>
+		<servlet-name>servletDefault</servlet-name>
+		<servlet-class>chromeDriverTestTool.servlet.ServletDefault</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>servletDefault</servlet-name>
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>servletAPI</servlet-name>
+		<servlet-class>chromeDriverTestTool.servlet.ServletAPI</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>servletAPI</servlet-name>
+		<url-pattern>*.doAPI</url-pattern>
+	</servlet-mapping>
+	
+
+</web-app>
