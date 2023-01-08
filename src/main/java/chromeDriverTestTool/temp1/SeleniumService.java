@@ -28,5 +28,6 @@ public interface SeleniumService {
 	 * ESC를 클릭한다.
 	 */
 	public void clickEscape(String xPath);
-
+	
+	
 }
