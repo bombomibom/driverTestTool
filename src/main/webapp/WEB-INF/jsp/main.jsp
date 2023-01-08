@@ -176,7 +176,7 @@
 	/* 
 	 * 추가할 부모 콘텐츠를 찾는다.
 	 */
-	function findAppendTarget(itemType){
+	function findAppendTarget(itemCategory){
 		var appendTarget = "";
 		
 		// 추가할 부모 콘텐츠 찾기
@@ -184,21 +184,21 @@
 			var lastContents = $(".testBoard").find(".testBox").last().children().last();
 			//console.log(lastContents);
 			
-			if(lastContents.hasClass("target")){
-				if(itemType == "movement"){
+			if(lastContents.attr("data-category") == "target"){
+				if(itemCategory == "movement"){
 					result = lastContents.parent();
 				} else {
 					result = "동작부터 지정해주세요.";
 				}
-			} else if(lastContents.hasClass("movement")){
-				if(itemType == "target"){
+			} else if(lastContents.attr("data-category") == "movement"){
+				if(itemCategory == "target"){
 					result = $(".testBoard");
 				} else {
 					result = "경로부터 지정해주세요.";
 				}
 			}
 		} else {
-			if(itemType == "target"){
+			if(itemCategory == "target"){
 				result = $(".testBoard");
 			} else {
 				result = "경로부터 지정해주세요.";
@@ -212,17 +212,17 @@
 	 * 콘텐츠 아이템을 추가한다.
 	 */
 	function appendItem(clickedItem){
-		var itemType = clickedItem.parent().parent().attr("class");
-		var result = findAppendTarget(itemType);
+		var itemCategory = clickedItem.parent().parent().attr("class");
+		var result = findAppendTarget(itemCategory);
 		
 		if(typeof(result) == "object"){
-			if(itemType == "target"){
-				result.append("<div class='testBox'><input type='button' value='x' class='closeBtn' onclick='removeItems($(this));' /><div class='target'><input type='text' class='" + clickedItem.attr("class") + "' placeholder='" + clickedItem.text() + "' /></div></div>");
-			} else if(itemType == "movement"){
-				if(clickedItem.attr("class").includes("click")){ // 230106 여기부터 진행!! 동작 클릭이냐 인풋이냐에 따라 다르다!!
-					result.append("<div class='movement'><input type='button' class='" + clickedItem.attr("class") + "' value='" + clickedItem.text() + "' /></div>");
+			if(itemCategory == "target"){
+				result.append("<div class='testBox'><input type='button' value='x' class='closeBtn' onclick='removeItems($(this));' /><div data-category='target'><input type='text' data-type='" + clickedItem.attr("class") + "' placeholder='" + clickedItem.text() + "' /></div></div>");
+			} else if(itemCategory == "movement"){
+				if(clickedItem.attr("class").includes("click")){
+					result.append("<div data-category='movement'><input type='button' data-type='" + clickedItem.attr("class") + "' value='" + clickedItem.text() + "' /></div>");
 				} else if(clickedItem.attr("class").includes("input")){
-					result.append("<div class='movement'><input type='text' class='" + clickedItem.attr("class") + "' placeholder='" + clickedItem.text() + "' /></div>");
+					result.append("<div data-category='movement'><input type='text' data-type='" + clickedItem.attr("class") + "' placeholder='" + clickedItem.text() + "' /></div>");
 				}
 			}
 		} else {
@@ -245,7 +245,7 @@
 		
 		$(".testBox").each(function(){
 			$(this).find("div").each(function(){
-				str += "<div class='item'>" + $(this).children("input").attr("class") + " - " + $(this).children("input").val() + "</div><div class='status'><span>--상태바--</span></div>";
+				str += "<div class='item'>" + $(this).children("input").attr("data-type") + " - " + $(this).children("input").val() + "</div><div class='status'><span>--상태바--</span></div>";
 			})
 		})
 		
@@ -261,10 +261,11 @@
 		var driverPath = $("#driverPath").val();
 		var item = {};
 		var itemList = [];
-	
+		
 		$(".testBox").each(function(){
 			$(this).find("div").each(function(){
-				item[$(this).children("input").attr("class")] = $(this).children("input").val();
+				item[$(this).attr("data-category") + "Type"] = $(this).children("input").attr("data-type");
+				item[$(this).attr("data-category") + "Value"] = $(this).children("input").val();
 			})
 			itemList.push(item);
 			item = {};

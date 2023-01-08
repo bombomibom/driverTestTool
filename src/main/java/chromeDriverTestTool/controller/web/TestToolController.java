@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -16,7 +17,6 @@ import org.jsoup.nodes.Element;
 import chromeDriverTestTool.item.VO.CommandVO;
 import chromeDriverTestTool.item.VO.TargetVO;
 import chromeDriverTestTool.item.impl.TestItemImpl;
-import net.sf.json.JSONObject;
 
 public class TestToolController {
 	
@@ -89,10 +89,20 @@ public class TestToolController {
 		}
 		
 		// step2: testArrStr 하나씩 정보 가져와서 run
-//		System.out.println(testListStr);
-//		JSONParser jsonParser = new JSONParser();
-//		JSONObject jsonObj = (JSONObject) jsonParser.parse(testListStr);
-//		System.out.println(jsonObj);
+		System.out.println(testListStr);
+		
+		// json type parsing
+		JSONParser parser = new JSONParser();
+		Object obj = parser.parse(testListStr);
+		JSONArray jsonArray = (JSONArray)obj;
+
+		for(int i=0;i<jsonArray.size();i++){
+			JSONObject jsonObj = (JSONObject)jsonArray.get(i);
+			System.out.print(jsonObj);
+			
+			System.out.println(jsonObj.get("movementType")); // 이런식으로 key값으로 value 조회 가능
+			
+		}
 		
 		return "hello";
 	}
