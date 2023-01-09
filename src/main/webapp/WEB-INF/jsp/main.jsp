@@ -37,9 +37,16 @@
 	}
 	
 	#driverTestContainer section {
-		width: calc(100% - 33%);
 		margin: 0 10px;
 		height: 100px;
+	}
+	
+	#driverTestContainer section:nth-child(1) {
+		flex: 1;
+	}
+	
+	#driverTestContainer section:nth-child(2) {
+		flex: 2;
 	}
 	
 	#driverTestContainer h1 {
@@ -55,7 +62,7 @@
 		padding: 7px;
 	}
 	
-	#driverTestContainer .firstContents a, td a {
+	#driverTestContainer a {
 		background-color: #F9F9F9;
 		text-align: center;
 		font-size: 14px;
@@ -64,6 +71,21 @@
 	#driverTestContainer table {
 		width: 100%;
 		border-collapse: collapse;
+		margin-bottom: 20px;
+	}
+	
+	#driverTestContainer tbody.driverUrlList {
+		height: 300px;
+		overflow: scroll;
+		display: block;
+	}
+	
+	#driverTestContainer tbody.driverUrlList tr {
+		width: 100%;
+		display: block;
+	}
+	#driverTestContainer tbody.driverUrlList td {
+		display: block;
 	}
 	
 	#driverTestContainer th:first-child {
@@ -85,53 +107,14 @@
 		display: flex;
 	}
 	
-	#driverTestContainer section .btnBox a {
+	#driverTestContainer .btnBox a {
 		width: 50%;
 		text-align: center;
 		padding: 7px;
 		background-color: #efefef;
 	}
 	
-	#driverTestContainer section:nth-child(3) h1, .thirdContents {
-		display: none;
-	}
 	
-	#driverTestContainer .thirdContents .testList {
-		flex: 1;
-		background-color: lightgray;
-	}
-	
-	#driverTestContainer .thirdContents .testBoard {
-		background-color: darkgray;
-		flex: 2;
-	}
-	
-	#driverTestContainer .thirdContents .testBoard>div.execBoard {
-		background-color: gray;
-	}
-	
-	#driverTestContainer .thirdContents .contentBox {
-		display: flex;
-		height: 700px; /* 임시 */
-	}
-	
-	#driverTestContainer .thirdContents li span {
-		text-align: center;
-		font-weight: bold;
-	}
-	
-	#driverTestContainer .thirdContents .variableList, .actionList {
-		cursor: pointer;
-	}
-	
-	#driverTestContainer .thirdContents .testBox input {
-		width: auto
-	}
-	
-	#driverTestContainer .thirdContents .testList a {
-		width: 100%;
-		display: block;
-	}
 </style>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
@@ -162,15 +145,6 @@
 			//console.log("key : " + key + ", value : " + jsonList[key]);
 			$(target).append("<li><a href='#none' class='" + key + "' onclick='appendItem($(this));'>" + jsonList[key] + "</a></li>");
 		}
-	}
-	
-	/* 
-	 * 테스트 항목 지정을 보여준다.
-	 */
-	function showTestBoard(){
-		$("#driverTestContainer section:nth-child(3) h1, .thirdContents").css({
-			"display":"block"
-		})
 	}
 	
 	/* 
@@ -249,8 +223,8 @@
 			})
 		})
 		
-		$(".testItems").html("");
-		$(".testItems").append(str);
+		$(".testItemList").html("");
+		$(".testItemList").append(str);
 	}
 
 	/* 
@@ -366,7 +340,7 @@
                 		</tr>
                 	</thead>
                 	<tbody class="driverUrlList">
-                    	<!-- <a href="">클릭</a> -->
+                	
                 	</tbody>
                 </table>
             </div>
@@ -397,8 +371,35 @@
                             </tr>
                             <tr>
                                 <td>테스트</td>
+                                <td class="testItemList">
+                                
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+									<div class="testList">
+				            			<div class="liBox">
+				            				<h3>1. 타겟</h3>
+				        					<ul class="target">
+				        						
+				        					</ul>
+				            			</div>
+				            			<div class="liBox">
+				            				<h3>2. 동작</h3>
+				           					<ul class="movement">
+				           					
+				           					</ul>
+				            			</div>
+					                </div>
+								</td>
                                 <td class="testItems">
-                                	<a href="#none" onclick="showTestBoard();">클릭</a>
+                                	<div class="testBoard">
+	            	
+	              				    </div>
+	              				    <div class="btnBox">
+					                    <a href="">취소</a> <!-- 만들어야 함 -->
+					                    <a onclick="addTestList();">확인</a>
+					                </div>	
                                 </td>
                             </tr>
                         </tbody>
@@ -407,34 +408,6 @@
                         <a href="">취소</a>
                         <a href="#none" onclick="seleniumTest();">실행</a>
                     </div>
-                </div>
-            </div>
-        </section>
-        <section>
-			<h1>항목 지정</h1>
-            <div class="thirdContents">
-            	<div class="contentBox">
-            		<div class="testList">
-            			<div class="liBox">
-            				<h3>1. 타겟</h3>
-        					<ul class="target">
-        						
-        					</ul>
-            			</div>
-            			<div class="liBox">
-            				<h3>2. 동작</h3>
-           					<ul class="movement">
-           					
-           					</ul>
-            			</div>
-	                </div>
-	            	<div class="testBoard">
-	            	
-	                </div>		
-            	</div>
-            	<div class="btnBox">
-                    <a href="">취소</a> <!-- 만들어야 함 -->
-                    <a onclick="addTestList();">확인</a>
                 </div>
             </div>
         </section>

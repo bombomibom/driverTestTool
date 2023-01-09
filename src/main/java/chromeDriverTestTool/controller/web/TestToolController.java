@@ -14,7 +14,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import chromeDriverTestTool.item.VO.CommandVO;
+import chromeDriverTestTool.item.VO.NeedElementsCmdVO;
 import chromeDriverTestTool.item.VO.TargetVO;
 import chromeDriverTestTool.item.impl.TestItemImpl;
 
@@ -63,7 +63,7 @@ public class TestToolController {
 		}
 		
 		// 3. 테스트 리스트 가져오기
-		CommandVO commandVO = new CommandVO();
+		NeedElementsCmdVO commandVO = new NeedElementsCmdVO();
 		TargetVO targetVO = new TargetVO();
 		
 		request.setAttribute("commandList", testItemImpl.getTestList(commandVO));
