@@ -219,7 +219,7 @@ public class SeleniumServiceImpl implements SeleniumService {
 		// action.keyDown(Keys.CONTROL).sendKeys("a").keyUp(Keys.CONTROL).perform();
 		// https://stqatools.com/selenium-keyboard-events/
 		
-		// RobotClass
+		// RobotClass 넣을지 고민
 		// method: keyPress, mousePress, mouseMove, keyRelease, mouseRelease
 		// https://stqatools.com/selenium-robot-class/
 		

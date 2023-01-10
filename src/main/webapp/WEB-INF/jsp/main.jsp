@@ -121,21 +121,21 @@
 <script>
 
 	$(document).ready(function(){
-		// main 화면 출력시 request.setAttribute로 받은 내용 변수 저장
+		// 변수 저장
 		var driverUrlList = "${driverUrlList}";
 		var commandList = JSON.parse('${commandList}');
 		var targetList = JSON.parse('${targetList}');
 
-		// 드라이버 리스트 출력
+		// 1. 드라이버 리스트 출력
 		$(".driverUrlList").append(driverUrlList);
 
-		// 셀레니움 테스트 리스트 출력
-		appendTestList(targetList, ".testList .target");
-		appendTestList(commandList, ".testList .movement");
+		// 2. 테스트 리스트 출력(일단 보류. 디비로 옮기고 다시 진행 예정)
+		//appendTestList(targetList, ".testList .target");
+		//appendTestList(commandList, ".testList .movement");
 	})
 	
 	/* 
-	 * 셀레니움 테스트 리스트를 출력한다.
+	 * 테스트 리스트를 출력한다.
 	 */
 	function appendTestList(jsonList, target){
 		var keys = Object.keys(jsonList);
@@ -192,7 +192,7 @@
 		if(typeof(result) == "object"){
 			if(itemCategory == "target"){
 				result.append("<div class='testBox'><input type='button' value='x' class='closeBtn' onclick='removeItems($(this));' /><div data-category='target'><input type='text' data-type='" + clickedItem.attr("class") + "' placeholder='" + clickedItem.text() + "' /></div></div>");
-			} else if(itemCategory == "movement"){
+			} else if(itemCategory == "NeedElementsCommand"){
 				if(clickedItem.attr("class").includes("click")){
 					result.append("<div data-category='movement'><input type='button' data-type='" + clickedItem.attr("class") + "' value='" + clickedItem.text() + "' /></div>");
 				} else if(clickedItem.attr("class").includes("input")){
@@ -263,46 +263,6 @@
 	        }
 	    })
 	}
-	
-	// 3. 항목 지정 - Drag & Drop
-// 	function dragover_handler(event){
-// 		console.log("DragOver");
-// 		event.preventDefault(); // 드롭을 허용하기 위해 기본 동작 취소
-// 	}
-	
-// 	// 타이틀 배치
-// 	function drop_title(event){
-// 		console.log("drop title!");
-// 		event.preventDefault();
-// 		$(".testBoard").append('<div class="testBox"><input type="checkbox" /><ul class="testList"><li class="title"><input type="text" placeholder="테스트명" /></li></ul><div class="btnBox"><a onclick="removeBox($(this));">삭제</a><a onclick="checkTestBox($(this));">선택</a></div></div>');
-// 	}
-	
-// 	// 드래그 시작시
-// 	function drag_start(thisLi){
-// 		console.log("drag start");
-// 		console.log(thisLi);
-// 	}
-	
-	/* function drag_enter(event){
-		if(event.target.className == "testBoard"){
-		}
-	} */
-	
-	// jquery 방식
-	/* $(function(){
-		$("#drag").bind('dragstart', function(event){
-			event.originalEvent.dataTransfer.setData('text', event.target.id);
-		})
-		$("#drop")
-			.bind('dragenter dragover', false) 
-			.bind('drop', function(event){ 
-				var $li = $('<li>').text(event.originalEvent.dataTransfer.getData('text'));
-				$(this).append($li);
-				return false; 
-			});
-	}); */
-	
-	
 	
 </script>
 </head>
@@ -385,9 +345,56 @@
 				        					</ul>
 				            			</div>
 				            			<div class="liBox">
-				            				<h3>2. 동작</h3>
-				           					<ul class="movement">
-				           					
+				            				<h3>2. 타겟 필요 동작</h3>
+				           					<ul class="NeedElementsCommand">
+				           						<li class="clickCommand">
+				           							<h4>클릭</h4>
+					           						<div data-type="button" data-name="clickEnter" onclick="appendItem($(this));">ENTER</div>
+					           						<div data-type="button" data-name="clickESC" onclick="appendItem($(this));">ESC</div>
+					           						<div data-type="button" data-name="clickDouble" onclick="appendItem($(this));">더블클릭</div>
+				           							<div data-type="button" data-name="clickRight" onclick="appendItem($(this));">우클릭</div>
+				           						</li>
+				           						<li class="inputCommand">
+				           							<h4>입력</h4>
+				           							<div data-type="text" data-name="inputSearchKeyword" onclick="appendItem($(this));">검색어</div>
+					           						<div data-type="text" data-name="inputValue" onclick="appendItem($(this));">값(value)</div>
+					           						<div data-type="text" data-name="inputDropDownText" onclick="appendItem($(this));"></div>
+					           						<div data-type="text" data-name="inputDropDownIndex" onclick="appendItem($(this));"></div>
+					           						<div data-type="text" data-name="inputDropDownTextForThePurposeClear" onclick="appendItem($(this));"></div>
+					           						<div data-type="text" data-name="inputDropDownValueForThePurposeClear" onclick="appendItem($(this));"></div>
+					           						<div data-type="text" data-name="inputCheckIndex" onclick="appendItem($(this));"></div>
+					           						<div data-type="text" data-name="inputScrollElement" onclick="appendItem($(this));"></div>
+				           						</li>
+				           						<li>
+				           							<h4>추출</h4>
+				           							<div data-type="text" data-name="inputAttr" onclick="appendItem($(this));">엘리먼트 속성</div>
+				           							<div data-type="button" data-name="getText" onclick="appendItem($(this));">텍스트</div>
+					           						<div data-type="button" data-name="getSize" onclick="appendItem($(this));">너비, 높이</div>
+					           						<div data-type="button" data-name="getLocation" onclick="appendItem($(this));">x, y 좌표</div>
+				           						</li>
+				           						<li>
+				           							<h4>기타(예정)</h4>
+					           						<div data-type="button" data-name="clearValue" onclick="appendItem($(this));">값 삭제</div>
+				           							<div data-type="button" data-name="submitForm" onclick="appendItem($(this));"></div>
+					           						<div data-type="button" data-name="waitUntilAlertIsPresent" onclick="appendItem($(this));"></div>
+					           						<div data-type="button" data-name="waitUntilElementToBeClickable" onclick="appendItem($(this));"></div>
+					           						<div data-type="button" data-name="waitUntilVisibilityOf" onclick="appendItem($(this));"></div>
+					           						<div data-type="button" data-name="conditionIsDisplayed" onclick="appendItem($(this));"></div>
+					           						<div data-type="button" data-name="isSelected" onclick="appendItem($(this));"></div>
+					           						<div data-type="button" data-name="isEnabled" onclick="appendItem($(this));"></div>
+					           						<div data-type="button" data-name="dragElement" onclick="appendItem($(this));"></div>
+					           						<div data-type="button" data-name="dropElement" onclick="appendItem($(this));"></div>
+					           						<div data-type="button" data-name="keyDown" onclick="appendItem($(this));"></div>
+					           						<div data-type="button" data-name="keyUp" onclick="appendItem($(this));"></div>
+					           						<div data-type="button" data-name="mouserHover" onclick="appendItem($(this));"></div>
+				           						</li>
+				           						
+				           					</ul>
+				            			</div>
+				            			<div class="liBox">
+				            				<h3>3. 타겟 불필요 동작</h3>
+				           					<ul class="FreeNeedElementsCommand">
+				           						
 				           					</ul>
 				            			</div>
 					                </div>

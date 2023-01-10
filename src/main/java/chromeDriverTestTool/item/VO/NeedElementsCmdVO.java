@@ -8,6 +8,7 @@ public class NeedElementsCmdVO {
 	// input
 	private String inputSearchKeyword = "검색";
 	private String inputAttribute = "속성 추출";
+	private String inputValue = "값 입력";
 	
 	// etc
 	private String clearValue = "내용 삭제";
@@ -17,6 +18,7 @@ public class NeedElementsCmdVO {
 	private String getText = "텍스트 추출";
 	private String getSize = "너비, 높이 추출";
 	private String getLocation = "x, y 좌표 추출";
+	private String getInnerText = "값 추출";
 	
 	// wait // wait 좀 더 있음
 	private String waitUntilAlertIsPresent = "알림창 표시될 때까지 대기";
@@ -37,5 +39,25 @@ public class NeedElementsCmdVO {
 	private String inputDropDownIndex = "인덱스로 드롭다운 요소 선택";
 	private String inputDropDownValue = "값으로 드롭다운 요소 선택";
 	private String inputDropDownTextForThePurposeClear = "텍스트로 드롭다운 요소 취소";
-	private String inputDropDownValueForThePurposeClear = "값으로 드롭다운 요소 취소";
+	private String inputDropDownValueForThePurposeClear = "값으로 드롭다운 요소 취소"; // 이 외에도 여러 개 있음
+	
+	// checkBox or radioBtn
+	private String inputCheckIndex = "인덱스로 체크박스 선택";
+	private String inputCheckValue = "값으로 체크박스 선택";
+	
+	// scroll
+	private String inputScrollElement = "지정한 엘리먼트까지 스크롤";
+	
+	// click action
+	private String doubleClick = "더블클릭";
+	private String rightClick = "우클릭";
+	
+	// keyBoard event
+	private String keyDown = "키보드를 눌렀을 때";
+	private String keyUp = "키보드에서 손을 뗐을 때";
+	
+	// mouseHover
+	private String mouseHover = "마우스 오버했을 때";
+	
+	
 }
