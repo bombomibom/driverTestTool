@@ -1,12 +1,14 @@
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="java.util.ArrayList"%>
-<%-- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> --%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 	/* 슬래시 없어지는 현상 때문에 이렇게 진행 */
 	String driverPath = "";
 	if((String)request.getAttribute("driverPath") != null){
 		driverPath = (String)request.getAttribute("driverPath");
 	}
+	String path = request.getRequestURI();
+	String path22 = request.getContextPath();
 %>
 <!DOCTYPE html>
 <html>
@@ -14,9 +16,9 @@
 <meta charset="UTF-8">
 <title>메인페이지</title>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-<!-- <link rel="stylesheet" type="text/css" href="css/main.css"> -->
+<link rel="stylesheet" type="text/css" href="../css/main.css">
 <style type="text/css">
-	* {
+	/* * {
 		padding: 0;
 		margin: 0;
 		text-decoration: none;
@@ -112,7 +114,7 @@
 		text-align: center;
 		padding: 7px;
 		background-color: #efefef;
-	}
+	} */
 	
 	
 </style>
@@ -123,21 +125,24 @@
 	$(document).ready(function(){
 		// 변수 저장
 		var driverUrlList = "${driverUrlList}";
-		var CmdList = JSON.parse('${CmdList}');
-		var targetList = JSON.parse('${targetList}');
+		//var cmdList = JSON.parse('${CmdList}');
+		//var targetList = JSON.parse('${targetList}');
 
 		// 1. 드라이버 리스트 출력
 		$(".driverUrlList").append(driverUrlList);
-
+		var path2 = "${path}";
+		var path3 = "${path22}";
+		console.log("dfd" + path2);
+		console.log(path3);
 		// 2. 테스트 리스트 출력(일단 보류. 디비로 옮기고 다시 진행 예정)
 		//appendTestList(targetList, ".testList .target");
-		//appendTestList(CmdList, ".testList .movement");
+		//appendTestList(cmdList, ".testList .movement");
 	})
 	
 	/* 
 	 * 테스트 리스트를 출력한다.
 	 */
-	function appendTestList(jsonList, target){
+	/* function appendTestList(jsonList, target){
 		var keys = Object.keys(jsonList);
 		
 		for(var i = 0; i < keys.length; i++){
@@ -145,7 +150,7 @@
 			//console.log("key : " + key + ", value : " + jsonList[key]);
 			$(target).append("<li><a href='#none' class='" + key + "' onclick='appendItem($(this));'>" + jsonList[key] + "</a></li>");
 		}
-	}
+	} */
 	
 	/* 
 	 * 추가할 부모 콘텐츠를 찾는다.
@@ -270,6 +275,7 @@
 	<div id="driverTestContainer">
         <section>
             <h1>STEP 1 크롬 드라이버 확인 및 설치</h1>
+            <h1><c:out value="${pageContext.request.contextPath}" /></h1>
             <div class="firstContents">
                 <table>
                 	<thead>
@@ -341,7 +347,14 @@
 				            			<div class="liBox">
 				            				<h3>1. 타겟</h3>
 				        					<ul class="target">
-				        						
+				        						<li class="targetCmd">
+				        							<div data-type="text" data-name="xPath" onclick="appendItem($(this));">xPath</div>
+				        							<div data-type="text" data-name="className" onclick="appendItem($(this));">className</div>
+				        							<div data-type="text" data-name="id" onclick="appendItem($(this));">id</div>
+				        							<div data-type="text" data-name="name" onclick="appendItem($(this));">name</div>
+				        							<div data-type="text" data-name="tagName" onclick="appendItem($(this));">tagName</div>
+				        							<div data-type="text" data-name="linkText" onclick="appendItem($(this));">linkText</div>
+				        						</li>
 				        					</ul>
 				            			</div>
 				            			<div class="liBox">
