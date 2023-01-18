@@ -1,13 +1,12 @@
-package chromeDriverTestTool.web;
+package chromeDriverTestTool.servlet;
 
 import java.io.IOException;
 
-import chromeDriverTestTool.service.impl.SeleniumServiceImpl;
-import jakarta.servlet.ServletConfig;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -18,29 +17,27 @@ import net.sf.json.JSONObject;
  * @since 2022.12.21
  * 
  */
-public class SeleniumTest extends HttpServlet {
+public class SeleniumTest_230103 extends HttpServlet {
 
 	/**
 	 * 초기화
 	 */
-	@Override
 	public void init(ServletConfig config) throws ServletException {
-		System.out.println("SeleniumTest init");
-        super.init();
+		/*System.out.println("SeleniumTest init");
+        super.init();*/
 	}
 	
 	/**
 	 * POST 방식으로 데이터 받아온 후 응답
 	 *
 	 */
-	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 변수 저장
+		/*// 변수 저장
 		String driverPath = request.getParameter("driverPath");
 		String testURL = request.getParameter("testURL");
 		String testArrStr = request.getParameter("testList");
 		
-		this.doSelenium(driverPath, testURL, testArrStr);
+		this.doSelenium(driverPath, testURL, testArrStr);*/
 	}
 
 	/**
@@ -49,7 +46,7 @@ public class SeleniumTest extends HttpServlet {
 	 */
 	public void doSelenium(String driverPath, String testURL, String testArrStr) {
 		// jsonObject 변환
-		JSONArray testArr = new JSONArray();
+		/*JSONArray testArr = new JSONArray();
 		testArr = JSONArray.fromObject(testArrStr);
 
 		// selenium 세팅 및 URL 접속
@@ -71,7 +68,7 @@ public class SeleniumTest extends HttpServlet {
 			} else if(actionType.equals("button") && etc.equals("ESC")) {
 				seleniumServiceImpl.clickEscape(path);
 			}
-	    }
+	    }*/
 
 	    // 브라우저 종료
 	    //driver.close();

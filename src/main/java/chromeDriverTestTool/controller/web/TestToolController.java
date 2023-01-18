@@ -43,7 +43,7 @@ public class TestToolController {
 		System.out.println(str);
 		request.setAttribute("driverUrlList", str);
 
-		// 2. 내 pc 크롬 드라이버 위치 가져오기
+		// 2. 내 pc 크롬 드라이버 위치 가져오기 // api가 좋지 않을까? 전체 새로고침 되니까
 		String path = request.getParameter("path");
 		System.out.println(path);
 		str = "";

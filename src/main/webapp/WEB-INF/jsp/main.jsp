@@ -7,8 +7,6 @@
 	if((String)request.getAttribute("driverPath") != null){
 		driverPath = (String)request.getAttribute("driverPath");
 	}
-	String path = request.getRequestURI();
-	String path22 = request.getContextPath();
 %>
 <!DOCTYPE html>
 <html>
@@ -16,9 +14,9 @@
 <meta charset="UTF-8">
 <title>메인페이지</title>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-<link rel="stylesheet" type="text/css" href="../css/main.css">
+<!-- <link rel="stylesheet" type="text/css" href="../css/main.css"> -->
 <style type="text/css">
-	/* * {
+	* {
 		padding: 0;
 		margin: 0;
 		text-decoration: none;
@@ -114,7 +112,7 @@
 		text-align: center;
 		padding: 7px;
 		background-color: #efefef;
-	} */
+	}
 	
 	
 </style>
@@ -123,38 +121,87 @@
 <script>
 
 	$(document).ready(function(){
-		// 변수 저장
+		// 크롬드라이버 리스트 출력
 		var driverUrlList = "${driverUrlList}";
-		//var cmdList = JSON.parse('${CmdList}');
-		//var targetList = JSON.parse('${targetList}');
-
-		// 1. 드라이버 리스트 출력
 		$(".driverUrlList").append(driverUrlList);
-		var path2 = "${path}";
-		var path3 = "${path22}";
-		console.log("dfd" + path2);
-		console.log(path3);
-		// 2. 테스트 리스트 출력(일단 보류. 디비로 옮기고 다시 진행 예정)
-		//appendTestList(targetList, ".testList .target");
-		//appendTestList(cmdList, ".testList .movement");
+		
 	})
 	
-	/* 
-	 * 테스트 리스트를 출력한다.
-	 */
-	/* function appendTestList(jsonList, target){
-		var keys = Object.keys(jsonList);
+	// 테스트 아이템 추가 (함수화 진행 예정)
+	function appendTestItem(clickedItem){
 		
-		for(var i = 0; i < keys.length; i++){
-			var key = keys[i];
-			//console.log("key : " + key + ", value : " + jsonList[key]);
-			$(target).append("<li><a href='#none' class='" + key + "' onclick='appendItem($(this));'>" + jsonList[key] + "</a></li>");
+		var clickedItemCategory = clickedItem.parent().parent().attr("class");
+		var result = "";
+		if($(".testBoard").find(".testBox").length >= 1){
+
+			var lastContents = $(".testBoard").find(".testBox").last().children().last();
+			console.log(lastContents.attr("data-category"));
+			
+			if(lastContents.attr("data-category") == "target"){
+				if(clickedItemCategory == "targetCmd" || clickedItemCategory == "FreeNeedElementsCmd"){
+					alert("동작부터 지정해주세요.");
+				} else if(clickedItemCategory == "NeedElementsCmd"){
+					if(clickedItem.attr("data-type") == "button"){
+						lastContents.parent().append("<div data-category='NeedElements'><input type='button' data-type='" + clickedItem.attr("data-type") + "' value='" + clickedItem.text() + "' /></div>");
+					} else if(clickedItem.attr("data-type") == "text") {
+						lastContents.parent().append("<div data-category='NeedElements'><input type='text' data-type='" + clickedItem.attr("data-type") + "' placeholder='" + clickedItem.text() + "' /></div>");
+					}
+				}
+			} else if(lastContents.attr("data-category") == "NeedElements"){
+				if(clickedItemCategory == "targetCmd"){
+					$(".testBoard").append("<div class='testBox'><input type='button' value='x' class='closeBtn' onclick='removeTestItems($(this));' /><div data-category='target'><input type='text' data-type='" + clickedItem.attr("class") + "' placeholder='" + clickedItem.text() + "' /></div></div>");
+				} else if(clickedItemCategory == "FreeNeedElementsCmd") {
+					if(clickedItem.attr("data-type") == "button"){
+						$(".testBoard").append("<div class='testBox'><input type='button' value='x' class='closeBtn' onclick='removeTestItems($(this));' /><div data-category='FreeNeedElements'><input type='button' data-type='" + clickedItem.attr("class") + "' value='" + clickedItem.text() + "' /></div></div>");
+					} else if(clickedItem.attr("data-type") == "text"){ 
+						$(".testBoard").append("<div class='testBox'><input type='button' value='x' class='closeBtn' onclick='removeTestItems($(this));' /><div data-category='FreeNeedElements'><input type='text' data-type='" + clickedItem.attr("class") + "' placeholder='" + clickedItem.text() + "' /></div></div>");
+					}
+				} else if(clickedItemCategory == "NeedElementsCmd") {
+					alert("경로부터 지정해주세요.");
+				}
+			} else if(lastContents.attr("data-category") == "FreeNeedElements"){
+				if(clickedItemCategory == "targetCmd"){
+					$(".testBoard").append("<div class='testBox'><input type='button' value='x' class='closeBtn' onclick='removeTestItems($(this));' /><div data-category='target'><input type='text' data-type='" + clickedItem.attr("class") + "' placeholder='" + clickedItem.text() + "' /></div></div>");
+				} else if(clickedItemCategory == "NeedElementsCmd") {
+					alert("경로부터 지정해주세요.");
+				} else if(clickedItemCategory == "FreeNeedElementsCmd") { 
+					if(clickedItem.attr("data-type") == "button"){
+						$(".testBoard").append("<div class='testBox'><input type='button' value='x' class='closeBtn' onclick='removeTestItems($(this));' /><div data-category='FreeNeedElements'><input type='button' data-type='" + clickedItem.attr("class") + "' value='" + clickedItem.text() + "' /></div></div>");
+					} else if(clickedItem.attr("data-type") == "text"){ 
+						$(".testBoard").append("<div class='testBox'><input type='button' value='x' class='closeBtn' onclick='removeTestItems($(this));' /><div data-category='FreeNeedElements'><input type='text' data-type='" + clickedItem.attr("class") + "' placeholder='" + clickedItem.text() + "' /></div></div>");
+					}
+				}
+			}
+		} else {
+			if(clickedItemCategory == "targetCmd"){ // 타겟
+				$(".testBoard").append("<div class='testBox'><input type='button' value='x' class='closeBtn' onclick='removeTestItems($(this));' /><div data-category='target'><input type='text' data-type='" + clickedItem.attr("class") + "' placeholder='" + clickedItem.text() + "' /></div></div>");
+			} else if(clickedItemCategory == "FreeNeedElementsCmd") { // 타겟 불필요 동작
+				if(clickedItem.attr("data-type") == "button"){
+					$(".testBoard").append("<div class='testBox'><input type='button' value='x' class='closeBtn' onclick='removeTestItems($(this));' /><div data-category='FreeNeedElements'><input type='button' data-type='" + clickedItem.attr("class") + "' value='" + clickedItem.text() + "' /></div></div>");
+				} else if(clickedItem.attr("data-type") == "text"){ 
+					$(".testBoard").append("<div class='testBox'><input type='button' value='x' class='closeBtn' onclick='removeTestItems($(this));' /><div data-category='FreeNeedElements'><input type='text' data-type='" + clickedItem.attr("class") + "' placeholder='" + clickedItem.text() + "' /></div></div>");
+				}
+			} else if(clickedItemCategory == "NeedElementsCmd") { // 타겟 필요 동작
+				alert("경로부터 지정해주세요.");
+			}
 		}
-	} */
-	
-	/* 
-	 * 추가할 부모 콘텐츠를 찾는다.
-	 */
+		
+		/* if(typeof(result) == "object"){
+			if(itemCategory == "target"){
+				result.append("<div class='testBox'><input type='button' value='x' class='closeBtn' onclick='removeItems($(this));' /><div data-category='target'><input type='text' data-type='" + clickedItem.attr("class") + "' placeholder='" + clickedItem.text() + "' /></div></div>");
+			} else if(itemCategory == "NeedElementsCmd"){
+				if(clickedItem.attr("class").includes("click")){
+					result.append("<div data-category='movement'><input type='button' data-type='" + clickedItem.attr("class") + "' value='" + clickedItem.text() + "' /></div>");
+				} else if(clickedItem.attr("class").includes("input")){
+					result.append("<div data-category='movement'><input type='text' data-type='" + clickedItem.attr("class") + "' placeholder='" + clickedItem.text() + "' /></div>");
+				}
+			}
+		} else {
+			alert(result);
+		}  */
+	}
+
+	/* // 추가할 부모 콘텐츠를 찾는다.
 	function findAppendTarget(itemCategory){
 		var appendTarget = "";
 		
@@ -185,40 +232,15 @@
 		}
 		
 		return result;
-	}
+	} */
 	
-	/* 
-	 * 콘텐츠 아이템을 추가한다.
-	 */
-	function appendItem(clickedItem){
-		var itemCategory = clickedItem.parent().parent().attr("class");
-		var result = findAppendTarget(itemCategory);
-		
-		if(typeof(result) == "object"){
-			if(itemCategory == "target"){
-				result.append("<div class='testBox'><input type='button' value='x' class='closeBtn' onclick='removeItems($(this));' /><div data-category='target'><input type='text' data-type='" + clickedItem.attr("class") + "' placeholder='" + clickedItem.text() + "' /></div></div>");
-			} else if(itemCategory == "NeedElementsCmd"){
-				if(clickedItem.attr("class").includes("click")){
-					result.append("<div data-category='movement'><input type='button' data-type='" + clickedItem.attr("class") + "' value='" + clickedItem.text() + "' /></div>");
-				} else if(clickedItem.attr("class").includes("input")){
-					result.append("<div data-category='movement'><input type='text' data-type='" + clickedItem.attr("class") + "' placeholder='" + clickedItem.text() + "' /></div>");
-				}
-			}
-		} else {
-			alert(result);
-		}
-	}
 	
-	/* 
-	 * 콘텐츠 아이템을 제거한다.
-	 */
-	function removeItems(clickedBtn){
+	// 콘텐츠 아이템을 제거한다.
+	function removeTestItems(clickedBtn){
 		clickedBtn.parent().remove();
 	}
 	
-	/* 
-	 * 테스트 리스트에 셀레니움 아이템을 추가한다.
-	 */
+	// 테스트 리스트에 셀레니움 아이템을 추가한다.
 	function addTestList(){
 		var str = "";
 		
@@ -346,138 +368,138 @@
 									<div class="testList">
 				            			<div class="liBox">
 				            				<h3>1. 타겟</h3>
-				        					<ul class="target">
-				        						<li class="targetCmd">
-				        							<div data-type="text" data-name="xPath" onclick="appendItem($(this));">xPath</div>
-				        							<div data-type="text" data-name="className" onclick="appendItem($(this));">className</div>
-				        							<div data-type="text" data-name="id" onclick="appendItem($(this));">id</div>
-				        							<div data-type="text" data-name="name" onclick="appendItem($(this));">name</div>
-				        							<div data-type="text" data-name="tagName" onclick="appendItem($(this));">tagName</div>
-				        							<div data-type="text" data-name="linkText" onclick="appendItem($(this));">linkText</div>
+				        					<ul class="targetCmd">
+				        						<li class="target">
+				        							<div data-type="text" data-name="xPath" onclick="appendTestItem($(this));">xPath</div>
+				        							<div data-type="text" data-name="className" onclick="appendTestItem($(this));">className</div>
+				        							<div data-type="text" data-name="id" onclick="appendTestItem($(this));">id</div>
+				        							<div data-type="text" data-name="name" onclick="appendTestItem($(this));">name</div>
+				        							<div data-type="text" data-name="tagName" onclick="appendTestItem($(this));">tagName</div>
+				        							<div data-type="text" data-name="linkText" onclick="appendTestItem($(this));">linkText</div>
 				        						</li>
 				        					</ul>
 				            			</div>
 				            			<div class="liBox">
 				            				<h3>2. 타겟 필요 동작</h3>
 				           					<ul class="NeedElementsCmd">
-				           						<li class="clickCmd">
+				           						<li class="click">
 				           							<h4>클릭</h4>
-					           						<div data-type="button" data-name="clickEnter" onclick="appendItem($(this));">ENTER</div>
-					           						<div data-type="button" data-name="clickESC" onclick="appendItem($(this));">ESC</div>
-					           						<div data-type="button" data-name="clickDouble" onclick="appendItem($(this));">더블클릭</div>
-				           							<div data-type="button" data-name="clickRight" onclick="appendItem($(this));">우클릭</div>
+					           						<div data-type="button" data-name="clickEnter" onclick="appendTestItem($(this));">ENTER</div>
+					           						<div data-type="button" data-name="clickESC" onclick="appendTestItem($(this));">ESC</div>
+					           						<div data-type="button" data-name="clickDouble" onclick="appendTestItem($(this));">더블클릭</div>
+				           							<div data-type="button" data-name="clickRight" onclick="appendTestItem($(this));">우클릭</div>
 				           						</li>
-				           						<li class="inputCmd">
+				           						<li class="input">
 				           							<h4>입력</h4>
-				           							<div data-type="text" data-name="inputSearchKeyword" onclick="appendItem($(this));">검색어</div>
-					           						<div data-type="text" data-name="inputValue" onclick="appendItem($(this));">값(value)</div>
-					           						<div data-type="text" data-name="inputDropDownText" onclick="appendItem($(this));">선택 드롭다운 텍스트</div>
-					           						<div data-type="text" data-name="inputDropDownIndex" onclick="appendItem($(this));">선택 드롭다운 인덱스</div>
-					           						<div data-type="text" data-name="inputDropDownClearText" onclick="appendItem($(this));">선택취소 드롭다운 텍스트</div>
-					           						<div data-type="text" data-name="inputDropDownClearValue" onclick="appendItem($(this));">선택취소 드롭다운 값(value)</div>
-					           						<div data-type="text" data-name="inputCheckIndex" onclick="appendItem($(this));">선택 체크박스 인덱스</div>
-					           						<div data-type="text" data-name="inputScrollElement" onclick="appendItem($(this));">최상단부터 스크롤이 멈추는 지점(element)</div>
-				           							<div data-type="text" data-name="inputAttr" onclick="appendItem($(this));">추출할 엘리먼트 속성</div>
+				           							<div data-type="text" data-name="inputSearchKeyword" onclick="appendTestItem($(this));">검색어</div>
+					           						<div data-type="text" data-name="inputValue" onclick="appendTestItem($(this));">값(value)</div>
+					           						<div data-type="text" data-name="inputDropDownText" onclick="appendTestItem($(this));">선택 드롭다운 텍스트</div>
+					           						<div data-type="text" data-name="inputDropDownIndex" onclick="appendTestItem($(this));">선택 드롭다운 인덱스</div>
+					           						<div data-type="text" data-name="inputDropDownClearText" onclick="appendTestItem($(this));">선택취소 드롭다운 텍스트</div>
+					           						<div data-type="text" data-name="inputDropDownClearValue" onclick="appendTestItem($(this));">선택취소 드롭다운 값(value)</div>
+					           						<div data-type="text" data-name="inputCheckIndex" onclick="appendTestItem($(this));">선택 체크박스 인덱스</div>
+					           						<div data-type="text" data-name="inputScrollElement" onclick="appendTestItem($(this));">최상단부터 스크롤이 멈추는 지점(element)</div>
+				           							<div data-type="text" data-name="inputAttr" onclick="appendTestItem($(this));">추출할 엘리먼트 속성</div>
 				           						</li>
-				           						<li class="getCmd">
+				           						<li class="get">
 				           							<h4>추출</h4>
-				           							<div data-type="button" data-name="getText" onclick="appendItem($(this));">텍스트</div>
-					           						<div data-type="button" data-name="getSize" onclick="appendItem($(this));">너비, 높이</div>
-					           						<div data-type="button" data-name="getLocation" onclick="appendItem($(this));">x, y 좌표</div>
+				           							<div data-type="button" data-name="getText" onclick="appendTestItem($(this));">텍스트</div>
+					           						<div data-type="button" data-name="getSize" onclick="appendTestItem($(this));">너비, 높이</div>
+					           						<div data-type="button" data-name="getLocation" onclick="appendTestItem($(this));">x, y 좌표</div>
 				           						</li>
-				           						<li class="waitCmd">
+				           						<li class="wait">
 				           							<h4>대기</h4>
-					           						<div data-type="button" data-name="waitUntilAlertIsPresent" onclick="appendItem($(this));">알림창 표시될 때까지</div>
-					           						<div data-type="button" data-name="waitUntilElementToBeClickable" onclick="appendItem($(this));">엘리먼트 활성화 전까지</div>
-					           						<div data-type="button" data-name="waitUntilVisibilityOf" onclick="appendItem($(this));">엘리먼트 보일 때까지</div>
+					           						<div data-type="button" data-name="waitUntilAlertIsPresent" onclick="appendTestItem($(this));">알림창 표시될 때까지</div>
+					           						<div data-type="button" data-name="waitUntilElementToBeClickable" onclick="appendTestItem($(this));">엘리먼트 활성화 전까지</div>
+					           						<div data-type="button" data-name="waitUntilVisibilityOf" onclick="appendTestItem($(this));">엘리먼트 보일 때까지</div>
 				           						</li>
-												<li class="conditionCmd">
+												<li class="condition">
 													<h4>조건</h4>
-					           						<div data-type="button" data-name="isDisplayed" onclick="appendItem($(this));">display 활성화</div>
-					           						<div data-type="button" data-name="isSelected" onclick="appendItem($(this));">select 활성화</div>
-					           						<div data-type="button" data-name="isEnabled" onclick="appendItem($(this));">element 활성화</div>
+					           						<div data-type="button" data-name="isDisplayed" onclick="appendTestItem($(this));">display 활성화</div>
+					           						<div data-type="button" data-name="isSelected" onclick="appendTestItem($(this));">select 활성화</div>
+					           						<div data-type="button" data-name="isEnabled" onclick="appendTestItem($(this));">element 활성화</div>
 												</li>
-												<li class="dragAndDropCmd">
+												<li class="dragAndDrop">
 													<h4>드래그 앤 드롭</h4>
-					           						<div data-type="button" data-name="dragElement" onclick="appendItem($(this));">드래그</div>
-					           						<div data-type="button" data-name="dropElement" onclick="appendItem($(this));">드롭</div>
+					           						<div data-type="button" data-name="dragElement" onclick="appendTestItem($(this));">드래그</div>
+					           						<div data-type="button" data-name="dropElement" onclick="appendTestItem($(this));">드롭</div>
 												</li>
-												<li class="keyBoardCmd">
+												<li class="keyBoard">
 													<h4>키보드 이벤트</h4>
-					           						<div data-type="button" data-name="keyUp" onclick="appendItem($(this));">키보드에서 손 뗐을 때</div>
-					           						<div data-type="button" data-name="keyDown" onclick="appendItem($(this));">키보드를 눌렀을 때</div>
+					           						<div data-type="button" data-name="keyUp" onclick="appendTestItem($(this));">키보드에서 손 뗐을 때</div>
+					           						<div data-type="button" data-name="keyDown" onclick="appendTestItem($(this));">키보드를 눌렀을 때</div>
 												</li>
-				           						<li class="etcCmd">
+				           						<li class="etc">
 				           							<h4>기타</h4>
-					           						<div data-type="button" data-name="clearValue" onclick="appendItem($(this));">값(value) 삭제</div>
-				           							<div data-type="button" data-name="submitForm" onclick="appendItem($(this));">양식 제출</div>
-					           						<div data-type="button" data-name="mouserHover" onclick="appendItem($(this));">마우스 오버</div>
+					           						<div data-type="button" data-name="clearValue" onclick="appendTestItem($(this));">값(value) 삭제</div>
+				           							<div data-type="button" data-name="submitForm" onclick="appendTestItem($(this));">양식 제출</div>
+					           						<div data-type="button" data-name="mouserHover" onclick="appendTestItem($(this));">마우스 오버</div>
 				           						</li>
 			           						</ul>
 				            			</div>		
 				            			<div class="liBox">
 				            				<h3>3. 타겟 불필요 동작</h3>
 				           					<ul class="FreeNeedElementsCmd">
-				           						<li class="browserCmd">
+				           						<li class="browser">
 				           							<h4>브라우저</h4>
-					           						<div data-type="button" data-name="getTitle" onclick="appendItem($(this));">타이틀 추출</div>
-					           						<div data-type="button" data-name="getCurrentURL" onclick="appendItem($(this));">URL 추출</div>
-					           						<div data-type="button" data-name="getPageSource" onclick="appendItem($(this));">페이지 소스 추출</div>
-				           							<div data-type="button" data-name="closeThisTab" onclick="appendItem($(this));">현재 창 닫기</div>
-				           							<div data-type="button" data-name="closeAllTab" onclick="appendItem($(this));">전체 창 닫기</div>
-				           							<div data-type="button" data-name="showMaximize" onclick="appendItem($(this));">최대 크기로 창 열기</div>
-				           							<div data-type="button" data-name="showMinimize" onclick="appendItem($(this));">최소 크기로 창 열기</div>
-				           							<div data-type="button" data-name="navigateBack" onclick="appendItem($(this));">뒤로가기</div>
-				           							<div data-type="button" data-name="navigateForward" onclick="appendItem($(this));">앞으로가기</div>
-				           							<div data-type="button" data-name="navigateRefresh" onclick="appendItem($(this));">새로고침</div>
+					           						<div data-type="button" data-name="getTitle" onclick="appendTestItem($(this));">타이틀 추출</div>
+					           						<div data-type="button" data-name="getCurrentURL" onclick="appendTestItem($(this));">URL 추출</div>
+					           						<div data-type="button" data-name="getPageSource" onclick="appendTestItem($(this));">페이지 소스 추출</div>
+				           							<div data-type="button" data-name="closeThisTab" onclick="appendTestItem($(this));">현재 창 닫기</div>
+				           							<div data-type="button" data-name="closeAllTab" onclick="appendTestItem($(this));">전체 창 닫기</div>
+				           							<div data-type="button" data-name="showMaximize" onclick="appendTestItem($(this));">최대 크기로 창 열기</div>
+				           							<div data-type="button" data-name="showMinimize" onclick="appendTestItem($(this));">최소 크기로 창 열기</div>
+				           							<div data-type="button" data-name="navigateBack" onclick="appendTestItem($(this));">뒤로가기</div>
+				           							<div data-type="button" data-name="navigateForward" onclick="appendTestItem($(this));">앞으로가기</div>
+				           							<div data-type="button" data-name="navigateRefresh" onclick="appendTestItem($(this));">새로고침</div>
 				           						</li>
-				           						<li class="driverOptionCmd">
+				           						<li class="driverOption">
 				           							<h4>드라이버 옵션</h4>
-				           							<div data-type="button" data-name="optDisablePopupBlocking" onclick="appendItem($(this));">팝업 무시</div>
-				           							<div data-type="button" data-name="optDisableDefaultApps" onclick="appendItem($(this));">기본 앱 미사용</div>
-				           							<div data-type="button" data-name="optMobileEmulation" onclick="appendItem($(this));">모바일 모드로 확인</div>
+				           							<div data-type="button" data-name="optDisablePopupBlocking" onclick="appendTestItem($(this));">팝업 무시</div>
+				           							<div data-type="button" data-name="optDisableDefaultApps" onclick="appendTestItem($(this));">기본 앱 미사용</div>
+				           							<div data-type="button" data-name="optMobileEmulation" onclick="appendTestItem($(this));">모바일 모드로 확인</div>
 				           						</li>
-				           						<li class="iframeAndWindowCmd">
+				           						<li class="iframeAndWindow">
 				           							<h4>iFrame & window</h4>
-				           							<div data-type="text" data-name="inputFrameName" onclick="appendItem($(this));">iFrame 이름으로 열기</div>
-				           							<div data-type="text" data-name="inputFrameIndex" onclick="appendItem($(this));">iFrame 인덱스로 열기</div>
-				           							<div data-type="button" data-name="showDefaultFrame" onclick="appendItem($(this));">기본 iFrame 열기</div>
-				           							<div data-type="text" data-name="inputWindowName" onclick="appendItem($(this));">window 창 이름으로 열기</div>
+				           							<div data-type="text" data-name="inputFrameName" onclick="appendTestItem($(this));">iFrame 이름으로 열기</div>
+				           							<div data-type="text" data-name="inputFrameIndex" onclick="appendTestItem($(this));">iFrame 인덱스로 열기</div>
+				           							<div data-type="button" data-name="showDefaultFrame" onclick="appendTestItem($(this));">기본 iFrame 열기</div>
+				           							<div data-type="text" data-name="inputWindowName" onclick="appendTestItem($(this));">window 창 이름으로 열기</div>
 				           						</li>
-				           						<li class="waitingTimeCmd">
+				           						<li class="waitingTime">
 				           							<h4>대기시간</h4>
-				           							<div data-type="text" data-name="inputWaitingTime" onclick="appendItem($(this));">대기 시간 입력</div>
+				           							<div data-type="text" data-name="inputWaitingTime" onclick="appendTestItem($(this));">대기 시간 입력</div>
 				           						</li>
-				           						<li class="alertCmd">
+				           						<li class="alert">
 				           							<h4>경고창</h4>
-				           							<div data-type="button" data-name="dismissAlert" onclick="appendItem($(this));">닫기</div>
-				           							<div data-type="button" data-name="acceptAlert" onclick="appendItem($(this));">확인버튼 클릭</div>
-				           							<div data-type="button" data-name="getAlertText" onclick="appendItem($(this));">텍스트 추출</div>
+				           							<div data-type="button" data-name="dismissAlert" onclick="appendTestItem($(this));">닫기</div>
+				           							<div data-type="button" data-name="acceptAlert" onclick="appendTestItem($(this));">확인버튼 클릭</div>
+				           							<div data-type="button" data-name="getAlertText" onclick="appendTestItem($(this));">텍스트 추출</div>
 				           						</li>
-				           						<li class="conditionalStatementCmd">
+				           						<li class="conditionalStatement">
 				           							<h4>조건문</h4>
-				           							<div data-type="button" data-name="conditionIf" onclick="appendItem($(this));">if</div>
-				           							<div data-type="button" data-name="conditionElse" onclick="appendItem($(this));">else</div>
-				           							<div data-type="button" data-name="conditionElseIf" onclick="appendItem($(this));">else if</div>
-				           							<div data-type="button" data-name="conditionFor" onclick="appendItem($(this));">for</div>
+				           							<div data-type="button" data-name="conditionIf" onclick="appendTestItem($(this));">if</div>
+				           							<div data-type="button" data-name="conditionElse" onclick="appendTestItem($(this));">else</div>
+				           							<div data-type="button" data-name="conditionElseIf" onclick="appendTestItem($(this));">else if</div>
+				           							<div data-type="button" data-name="conditionFor" onclick="appendTestItem($(this));">for</div>
 				           						</li>
-				           						<li class="scrollCmd">
+				           						<li class="scroll">
 				           							<h4>스크롤</h4>
-				           							<div data-type="button" data-name="inputScrollPixel" onclick="appendItem($(this));">스크롤될 픽셀 입력</div>
-				           							<div data-type="button" data-name="scrollBodyHeight" onclick="appendItem($(this));">최하단까지 스크롤</div>
+				           							<div data-type="button" data-name="inputScrollPixel" onclick="appendTestItem($(this));">스크롤될 픽셀 입력</div>
+				           							<div data-type="button" data-name="scrollBodyHeight" onclick="appendTestItem($(this));">최하단까지 스크롤</div>
 				           						</li>
-				           						<li class="screenshotCmd">
+				           						<li class="screenshot">
 				           							<h4>스크린샷</h4>
-				           							<div data-type="button" data-name="screenshot" onclick="appendItem($(this));">스크린샷</div>
+				           							<div data-type="button" data-name="screenshot" onclick="appendTestItem($(this));">스크린샷</div>
 				           						</li>
-				           						<li class="cookieCmd">
+				           						<li class="cookie">
 				           							<h4>쿠키</h4>
-				           							<div data-type="button" data-name="getCookie" onclick="appendItem($(this));">추출</div>
-				           							<div data-type="text" data-name="inputCookieName" onclick="appendItem($(this));">쿠키명으로 추출</div>
-				           							<div data-type="text" data-name="addCookie" onclick="appendItem($(this));">추가</div>
-				           							<div data-type="button" data-name="deleteCookie" onclick="appendItem($(this));">삭제</div>
-				           							<div data-type="text" data-name="deleteCookieName" onclick="appendItem($(this));">쿠키명으로 삭제</div>
-				           							<div data-type="button" data-name="deleteAllCookies" onclick="appendItem($(this));">전체 삭제</div>
+				           							<div data-type="button" data-name="getCookie" onclick="appendTestItem($(this));">추출</div>
+				           							<div data-type="text" data-name="inputCookieName" onclick="appendTestItem($(this));">쿠키명으로 추출</div>
+				           							<div data-type="text" data-name="addCookie" onclick="appendTestItem($(this));">추가</div>
+				           							<div data-type="button" data-name="deleteCookie" onclick="appendTestItem($(this));">삭제</div>
+				           							<div data-type="text" data-name="deleteCookieName" onclick="appendTestItem($(this));">쿠키명으로 삭제</div>
+				           							<div data-type="button" data-name="deleteAllCookies" onclick="appendTestItem($(this));">전체 삭제</div>
 				           						</li>
 				           					</ul>
 				            			</div>
