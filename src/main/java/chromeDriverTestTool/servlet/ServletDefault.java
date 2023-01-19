@@ -39,8 +39,8 @@ public class ServletDefault extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("seleniumGET");
-		TestItemImpl testItemImpl = new TestItemImpl();
-		testItemImpl.getPrevItem();
+//		TestItemImpl testItemImpl = new TestItemImpl();
+//		testItemImpl.getCurrentItem();
 
 		
 		String uri = request.getRequestURI();
@@ -74,7 +74,6 @@ public class ServletDefault extends HttpServlet {
 		System.out.println("2");
 		System.out.println("uri: " + uri);
 		Object controller = mapping.controllerMapping.get(uri);
-		
 		Method method = mapping.methodMapping.get(uri);
 		
 		

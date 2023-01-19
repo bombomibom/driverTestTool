@@ -3,6 +3,7 @@ package chromeDriverTestTool.controller.web;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,8 +15,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import chromeDriverTestTool.item.VO.NeedElementsCmdVO;
-import chromeDriverTestTool.item.VO.TargetVO;
 import chromeDriverTestTool.item.impl.TestItemImpl;
 
 public class TestToolController {
@@ -63,11 +62,11 @@ public class TestToolController {
 		}
 		
 		// 3. 테스트 리스트 가져오기
-		NeedElementsCmdVO commandVO = new NeedElementsCmdVO();
-		TargetVO targetVO = new TargetVO();
-		
-		request.setAttribute("commandList", testItemImpl.getTestList(commandVO));
-		request.setAttribute("targetList", testItemImpl.getTestList(targetVO));
+//		NeedElementsCmdVO commandVO = new NeedElementsCmdVO();
+//		TargetVO targetVO = new TargetVO();
+//		
+//		request.setAttribute("commandList", testItemImpl.getTestList(commandVO));
+//		request.setAttribute("targetList", testItemImpl.getTestList(targetVO));
 		response.setContentType("text/html;charset=UTF-8");
 		
 		fileList.clear();
@@ -126,5 +125,31 @@ public class TestToolController {
 		}
 		
 		return isExist;
+	}
+	
+	// testBoard testItem 추가하기
+	public String doSeleniumItem(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		// step1: 파라미터 세팅
+		String addItemCategory = request.getParameter("addItemCategory");
+		String addItemDataType = request.getParameter("addItemDataType");
+		String addItemDataName = request.getParameter("addItemDataName");
+		String addItemDataText = request.getParameter("addItemDataText");
+		boolean existItem = Boolean.parseBoolean(request.getParameter("existItem"));
+		String lastItem = request.getParameter("lastItem");
+		
+		//System.out.println(addItemCategory);
+		//System.out.println(addItemDataType);
+		//System.out.println(addItemDataName);
+		//System.out.println(existItem);
+		//System.out.println(lastItem);
+
+		// step2: 테스트 항목 매핑 후 출력
+		Map<String, String> result = testItemImpl.getTestMap(addItemCategory, addItemDataType, addItemDataName, addItemDataText, existItem, lastItem);
+		JSONObject resultJson = new JSONObject(result);
+		String resultTestItem = resultJson.toString();
+		//System.out.println(resultTestItem);
+		
+		return resultTestItem;
 	}
 }

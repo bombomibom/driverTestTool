@@ -121,124 +121,68 @@
 <script>
 
 	$(document).ready(function(){
+		
 		// 크롬드라이버 리스트 출력
 		var driverUrlList = "${driverUrlList}";
 		$(".driverUrlList").append(driverUrlList);
-		
 	})
-	
-	// 테스트 아이템 추가 (함수화 진행 예정)
+
+	// 테스트 항목 추가
 	function appendTestItem(clickedItem){
-		
 		var clickedItemCategory = clickedItem.parent().parent().attr("class");
-		var result = "";
-		if($(".testBoard").find(".testBox").length >= 1){
-
-			var lastContents = $(".testBoard").find(".testBox").last().children().last();
-			console.log(lastContents.attr("data-category"));
-			
-			if(lastContents.attr("data-category") == "target"){
-				if(clickedItemCategory == "targetCmd" || clickedItemCategory == "FreeNeedElementsCmd"){
-					alert("동작부터 지정해주세요.");
-				} else if(clickedItemCategory == "NeedElementsCmd"){
-					if(clickedItem.attr("data-type") == "button"){
-						lastContents.parent().append("<div data-category='NeedElements'><input type='button' data-type='" + clickedItem.attr("data-type") + "' value='" + clickedItem.text() + "' /></div>");
-					} else if(clickedItem.attr("data-type") == "text") {
-						lastContents.parent().append("<div data-category='NeedElements'><input type='text' data-type='" + clickedItem.attr("data-type") + "' placeholder='" + clickedItem.text() + "' /></div>");
-					}
-				}
-			} else if(lastContents.attr("data-category") == "NeedElements"){
-				if(clickedItemCategory == "targetCmd"){
-					$(".testBoard").append("<div class='testBox'><input type='button' value='x' class='closeBtn' onclick='removeTestItems($(this));' /><div data-category='target'><input type='text' data-type='" + clickedItem.attr("class") + "' placeholder='" + clickedItem.text() + "' /></div></div>");
-				} else if(clickedItemCategory == "FreeNeedElementsCmd") {
-					if(clickedItem.attr("data-type") == "button"){
-						$(".testBoard").append("<div class='testBox'><input type='button' value='x' class='closeBtn' onclick='removeTestItems($(this));' /><div data-category='FreeNeedElements'><input type='button' data-type='" + clickedItem.attr("class") + "' value='" + clickedItem.text() + "' /></div></div>");
-					} else if(clickedItem.attr("data-type") == "text"){ 
-						$(".testBoard").append("<div class='testBox'><input type='button' value='x' class='closeBtn' onclick='removeTestItems($(this));' /><div data-category='FreeNeedElements'><input type='text' data-type='" + clickedItem.attr("class") + "' placeholder='" + clickedItem.text() + "' /></div></div>");
-					}
-				} else if(clickedItemCategory == "NeedElementsCmd") {
-					alert("경로부터 지정해주세요.");
-				}
-			} else if(lastContents.attr("data-category") == "FreeNeedElements"){
-				if(clickedItemCategory == "targetCmd"){
-					$(".testBoard").append("<div class='testBox'><input type='button' value='x' class='closeBtn' onclick='removeTestItems($(this));' /><div data-category='target'><input type='text' data-type='" + clickedItem.attr("class") + "' placeholder='" + clickedItem.text() + "' /></div></div>");
-				} else if(clickedItemCategory == "NeedElementsCmd") {
-					alert("경로부터 지정해주세요.");
-				} else if(clickedItemCategory == "FreeNeedElementsCmd") { 
-					if(clickedItem.attr("data-type") == "button"){
-						$(".testBoard").append("<div class='testBox'><input type='button' value='x' class='closeBtn' onclick='removeTestItems($(this));' /><div data-category='FreeNeedElements'><input type='button' data-type='" + clickedItem.attr("class") + "' value='" + clickedItem.text() + "' /></div></div>");
-					} else if(clickedItem.attr("data-type") == "text"){ 
-						$(".testBoard").append("<div class='testBox'><input type='button' value='x' class='closeBtn' onclick='removeTestItems($(this));' /><div data-category='FreeNeedElements'><input type='text' data-type='" + clickedItem.attr("class") + "' placeholder='" + clickedItem.text() + "' /></div></div>");
-					}
-				}
-			}
-		} else {
-			if(clickedItemCategory == "targetCmd"){ // 타겟
-				$(".testBoard").append("<div class='testBox'><input type='button' value='x' class='closeBtn' onclick='removeTestItems($(this));' /><div data-category='target'><input type='text' data-type='" + clickedItem.attr("class") + "' placeholder='" + clickedItem.text() + "' /></div></div>");
-			} else if(clickedItemCategory == "FreeNeedElementsCmd") { // 타겟 불필요 동작
-				if(clickedItem.attr("data-type") == "button"){
-					$(".testBoard").append("<div class='testBox'><input type='button' value='x' class='closeBtn' onclick='removeTestItems($(this));' /><div data-category='FreeNeedElements'><input type='button' data-type='" + clickedItem.attr("class") + "' value='" + clickedItem.text() + "' /></div></div>");
-				} else if(clickedItem.attr("data-type") == "text"){ 
-					$(".testBoard").append("<div class='testBox'><input type='button' value='x' class='closeBtn' onclick='removeTestItems($(this));' /><div data-category='FreeNeedElements'><input type='text' data-type='" + clickedItem.attr("class") + "' placeholder='" + clickedItem.text() + "' /></div></div>");
-				}
-			} else if(clickedItemCategory == "NeedElementsCmd") { // 타겟 필요 동작
-				alert("경로부터 지정해주세요.");
-			}
-		}
+		var clickedItemDataType = clickedItem.attr("data-type");
+		var clickedItemDataName = clickedItem.attr("data-name");
+		var clickedItemDataText = clickedItem.text();
+		var existTestBoard = new Boolean(false);
+		var lastTestBoardItem = $(".testBoard").attr("class");
 		
-		/* if(typeof(result) == "object"){
-			if(itemCategory == "target"){
-				result.append("<div class='testBox'><input type='button' value='x' class='closeBtn' onclick='removeItems($(this));' /><div data-category='target'><input type='text' data-type='" + clickedItem.attr("class") + "' placeholder='" + clickedItem.text() + "' /></div></div>");
-			} else if(itemCategory == "NeedElementsCmd"){
-				if(clickedItem.attr("class").includes("click")){
-					result.append("<div data-category='movement'><input type='button' data-type='" + clickedItem.attr("class") + "' value='" + clickedItem.text() + "' /></div>");
-				} else if(clickedItem.attr("class").includes("input")){
-					result.append("<div data-category='movement'><input type='text' data-type='" + clickedItem.attr("class") + "' placeholder='" + clickedItem.text() + "' /></div>");
-				}
-			}
-		} else {
-			alert(result);
-		}  */
+		if($(".testBoard").find("div").length >= 1){
+			existTestBoard = Boolean(true);
+			lastTestBoardItem = $(".testBoard").find("div").last().attr("data-category");
+		}
+		//console.log(existTestBoard);
+		//console.log(lastTestBoardItem);
+	
+		$.ajax({
+	        type:"POST",
+	        url: "/seleniumItem.doAPI",
+	        data: {
+	        	addItemCategory: clickedItemCategory,
+	        	addItemDataType: clickedItemDataType,
+	        	addItemDataName: clickedItemDataName,
+	        	addItemDataText: clickedItemDataText,
+	        	existItem: existTestBoard,
+	        	lastItem: lastTestBoardItem
+	        },
+	        success: function(data){
+	        	var result = JSON.parse(data);
+	        	if(result.method == "append"){
+	        		$(".testBoard").append(result.value);
+	        	} else if(result.method == "alert") {
+	        		alert(result.value);
+	        	}
+	        },
+	        error: function(request,status,error){
+	            console.log(error);
+	        }
+	    })
 	}
-
-	/* // 추가할 부모 콘텐츠를 찾는다.
-	function findAppendTarget(itemCategory){
-		var appendTarget = "";
-		
-		// 추가할 부모 콘텐츠 찾기
-		if($(".testBoard").find(".testBox").length >= 1){
-			var lastContents = $(".testBoard").find(".testBox").last().children().last();
-			//console.log(lastContents);
-			
-			if(lastContents.attr("data-category") == "target"){
-				if(itemCategory == "movement"){
-					result = lastContents.parent();
-				} else {
-					result = "동작부터 지정해주세요.";
-				}
-			} else if(lastContents.attr("data-category") == "movement"){
-				if(itemCategory == "target"){
-					result = $(".testBoard");
-				} else {
-					result = "경로부터 지정해주세요.";
-				}
-			}
-		} else {
-			if(itemCategory == "target"){
-				result = $(".testBoard");
-			} else {
-				result = "경로부터 지정해주세요.";
-			}
-		}
-		
-		return result;
-	} */
 	
-	
-	// 콘텐츠 아이템을 제거한다.
+	// 테스트 항목 제거
 	function removeTestItems(clickedBtn){
-		clickedBtn.parent().remove();
+		if(clickedBtn.parent().attr("data-category") == "NeedElements"){
+			if(confirm("타겟까지 같이 삭제됩니다. 정말 삭제하시겠습니까?")){
+				clickedBtn.parent().prev().remove();
+				clickedBtn.parent().remove();
+			} else {
+				return false;
+			}
+		} else {
+			clickedBtn.parent().remove();
+		}
 	}
+	
+	// 230119 여기부터 진행
 	
 	// 테스트 리스트에 셀레니움 아이템을 추가한다.
 	function addTestList(){
@@ -368,7 +312,7 @@
 									<div class="testList">
 				            			<div class="liBox">
 				            				<h3>1. 타겟</h3>
-				        					<ul class="targetCmd">
+				        					<ul class="target">
 				        						<li class="target">
 				        							<div data-type="text" data-name="xPath" onclick="appendTestItem($(this));">xPath</div>
 				        							<div data-type="text" data-name="className" onclick="appendTestItem($(this));">className</div>
@@ -381,7 +325,7 @@
 				            			</div>
 				            			<div class="liBox">
 				            				<h3>2. 타겟 필요 동작</h3>
-				           					<ul class="NeedElementsCmd">
+				           					<ul class="NeedElements">
 				           						<li class="click">
 				           							<h4>클릭</h4>
 					           						<div data-type="button" data-name="clickEnter" onclick="appendTestItem($(this));">ENTER</div>
@@ -393,11 +337,11 @@
 				           							<h4>입력</h4>
 				           							<div data-type="text" data-name="inputSearchKeyword" onclick="appendTestItem($(this));">검색어</div>
 					           						<div data-type="text" data-name="inputValue" onclick="appendTestItem($(this));">값(value)</div>
-					           						<div data-type="text" data-name="inputDropDownText" onclick="appendTestItem($(this));">선택 드롭다운 텍스트</div>
-					           						<div data-type="text" data-name="inputDropDownIndex" onclick="appendTestItem($(this));">선택 드롭다운 인덱스</div>
-					           						<div data-type="text" data-name="inputDropDownClearText" onclick="appendTestItem($(this));">선택취소 드롭다운 텍스트</div>
-					           						<div data-type="text" data-name="inputDropDownClearValue" onclick="appendTestItem($(this));">선택취소 드롭다운 값(value)</div>
-					           						<div data-type="text" data-name="inputCheckIndex" onclick="appendTestItem($(this));">선택 체크박스 인덱스</div>
+					           						<div data-type="text" data-name="inputDropDownText" onclick="appendTestItem($(this));">선택할 드롭다운 텍스트</div>
+					           						<div data-type="text" data-name="inputDropDownIndex" onclick="appendTestItem($(this));">선택할 드롭다운 인덱스</div>
+					           						<div data-type="text" data-name="inputDropDownClearText" onclick="appendTestItem($(this));">선택취소할 드롭다운 텍스트</div>
+					           						<div data-type="text" data-name="inputDropDownClearValue" onclick="appendTestItem($(this));">선택취소할 드롭다운 값(value)</div>
+					           						<div data-type="text" data-name="inputCheckIndex" onclick="appendTestItem($(this));">선택할 체크박스 인덱스</div>
 					           						<div data-type="text" data-name="inputScrollElement" onclick="appendTestItem($(this));">최상단부터 스크롤이 멈추는 지점(element)</div>
 				           							<div data-type="text" data-name="inputAttr" onclick="appendTestItem($(this));">추출할 엘리먼트 속성</div>
 				           						</li>
@@ -432,14 +376,14 @@
 				           						<li class="etc">
 				           							<h4>기타</h4>
 					           						<div data-type="button" data-name="clearValue" onclick="appendTestItem($(this));">값(value) 삭제</div>
-				           							<div data-type="button" data-name="submitForm" onclick="appendTestItem($(this));">양식 제출</div>
+				           							<div data-type="button" data-name="submitForm" onclick="appendTestItem($(this));">양식(form) 제출</div>
 					           						<div data-type="button" data-name="mouserHover" onclick="appendTestItem($(this));">마우스 오버</div>
 				           						</li>
 			           						</ul>
 				            			</div>		
 				            			<div class="liBox">
 				            				<h3>3. 타겟 불필요 동작</h3>
-				           					<ul class="FreeNeedElementsCmd">
+				           					<ul class="FreeNeedElements">
 				           						<li class="browser">
 				           							<h4>브라우저</h4>
 					           						<div data-type="button" data-name="getTitle" onclick="appendTestItem($(this));">타이틀 추출</div>
