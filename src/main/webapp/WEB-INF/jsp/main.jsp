@@ -205,6 +205,7 @@
 		var itemList = [];
 		
 		if($(".testBoard").find("div").length >= 1){
+			
 			lastTestBoardItem = $(".testBoard").find("div").last().attr("data-category");
 			
 			if(lastTestBoardItem == "target"){
@@ -239,7 +240,6 @@
 			        }
 			    })
 			}
-			
 		} else {
 			alert("실행할 항목이 없습니다.");
 		}
