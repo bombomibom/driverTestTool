@@ -19,15 +19,14 @@ public class ServletMapping {
 		methodMapping = new Hashtable<>();
 
 		try {
-			
 			controllerMapping.put("/main.do", new TestToolController());
 			methodMapping.put("/main.do", TestToolController.class.getDeclaredMethod("main", HttpServletRequest.class, HttpServletResponse.class));
+		
+			controllerMapping.put("/setTestItem.doAPI", new TestToolController());
+			methodMapping.put("/setTestItem.doAPI", TestToolController.class.getDeclaredMethod("setTestItem", HttpServletRequest.class, HttpServletResponse.class));
 			
-			controllerMapping.put("/seleniumTest.doAPI", new TestToolController());
-			methodMapping.put("/seleniumTest.doAPI", TestToolController.class.getDeclaredMethod("doSelenium", HttpServletRequest.class, HttpServletResponse.class));
-			
-			controllerMapping.put("/seleniumItem.doAPI", new TestToolController());
-			methodMapping.put("/seleniumItem.doAPI", TestToolController.class.getDeclaredMethod("doSeleniumItem", HttpServletRequest.class, HttpServletResponse.class));
+			controllerMapping.put("/doSeleniumTest.doAPI", new TestToolController());
+			methodMapping.put("/doSeleniumTest.doAPI", TestToolController.class.getDeclaredMethod("doSeleniumTest", HttpServletRequest.class, HttpServletResponse.class));
 			
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();

@@ -1,39 +1,29 @@
 package chromeDriverTestTool.item.impl;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.openqa.selenium.WebDriver;
-
 import chromeDriverTestTool.item.service.TestItem;
-import net.sf.json.JSONObject;
 
 public class TestItemImpl implements TestItem {
-	
-	// WebDriver fields
-	WebDriver driver;
-	String driverId = "webdriver.chrome.driver";
-	String driverPath = "";
-	String testURL = "";
 
 	// 테스트 아이템 가져오기(DB 연동 후 진행)
-	public JSONObject getItemList(Object fieldObj) {
-		JSONObject jsonObj = new JSONObject();
-
-		for(Field field : fieldObj.getClass().getDeclaredFields()) {
-			field.setAccessible(true);
-			try {
-				jsonObj.put(field.getName(), field.get(fieldObj));
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
-		}
-		System.out.println(jsonObj);
-		return jsonObj;
-	}
+//	public JSONObject getItemList(Object fieldObj) {
+//		JSONObject jsonObj = new JSONObject();
+//
+//		for(Field field : fieldObj.getClass().getDeclaredFields()) {
+//			field.setAccessible(true);
+//			try {
+//				jsonObj.put(field.getName(), field.get(fieldObj));
+//			} catch (IllegalArgumentException e) {
+//				e.printStackTrace();
+//			} catch (IllegalAccessException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		System.out.println(jsonObj);
+//		return jsonObj;
+//	}
 
 	// 테스트 매핑 항목 가져오기
 	public Map<String, String> getTestMap(String addItemCategory, String addItemDataType, String addItemDataName, String addItemDataText, boolean existItem, String lastItem) {
@@ -108,21 +98,4 @@ public class TestItemImpl implements TestItem {
 		return testHTML;
 	}
 	
-	public void setDriverInfo(String driverPath, String testURL) {
-		this.driverPath = driverPath;
-		this.testURL = testURL;
-	}
-	
-	public void run() throws Exception {
-		System.out.println("run");
-	};
-	
-	public boolean getResult() throws Exception {
-		System.out.println("getResult");
-		return false;
-	};
-	
-	public void setSucceedCondition(String cond) { // or param type TestSucceedCondition
-		System.out.println("setSucceed");
-	};
 }

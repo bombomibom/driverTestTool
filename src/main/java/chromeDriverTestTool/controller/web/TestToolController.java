@@ -16,11 +16,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import chromeDriverTestTool.item.impl.TestItemImpl;
+import chromeDriverTestTool.selenium.impl.TestSeleniumImpl;
 
 public class TestToolController {
 	
 	private static ArrayList<File> fileList = new ArrayList<File>(); // 싱글톤
 	private static TestItemImpl testItemImpl = new TestItemImpl();
+	
 	
 	public String main(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		
@@ -74,38 +76,6 @@ public class TestToolController {
 		return "main";
 	}
 	
-	public String doSelenium(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
-		// step1: 정보 세팅
-		String driverPath = request.getParameter("driverPath");
-		String testURL = request.getParameter("testURL");
-		String testListStr = request.getParameter("testList");
-		
-		try {
-			testItemImpl.setDriverInfo(driverPath, testURL);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		// step2: testArrStr 하나씩 정보 가져와서 run
-		System.out.println(testListStr);
-		
-		// json type parsing
-		JSONParser parser = new JSONParser();
-		Object obj = parser.parse(testListStr);
-		JSONArray jsonArray = (JSONArray)obj;
-
-		for(int i=0;i<jsonArray.size();i++){
-			JSONObject jsonObj = (JSONObject)jsonArray.get(i);
-			System.out.print(jsonObj);
-			
-			System.out.println(jsonObj.get("movementType")); // 이런식으로 key값으로 value 조회 가능
-			
-		}
-		
-		return "hello";
-	}
-	
 	// 하위 전체 검색
 	public static boolean search(File f) { // try catch 추가
 		boolean isExist = false;
@@ -128,7 +98,7 @@ public class TestToolController {
 	}
 	
 	// testBoard testItem 추가하기
-	public String doSeleniumItem(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public String setTestItem(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		// step1: 파라미터 세팅
 		String addItemCategory = request.getParameter("addItemCategory");
@@ -151,5 +121,34 @@ public class TestToolController {
 		//System.out.println(resultTestItem);
 		
 		return resultTestItem;
+	}
+	
+	// 셀레니움 테스트
+	public String doSeleniumTest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		// step1: 정보 세팅
+		String driverPath = request.getParameter("driverPath");
+		String testURL = request.getParameter("testURL");
+		String testListStr = request.getParameter("testList");
+		
+		// step2: 테스트 세팅 및 크롬 접속
+		TestSeleniumImpl testSeleniumImpl = new TestSeleniumImpl(driverPath, testURL);
+		testSeleniumImpl.connectURL();
+		
+		// step3: 테스트 실행
+		JSONParser parser = new JSONParser();
+		Object obj = parser.parse(testListStr);
+		JSONArray jsonArray = (JSONArray)obj;
+	
+		try {
+			for(int i=0;i<jsonArray.size();i++){
+				JSONObject jsonObj = (JSONObject)jsonArray.get(i);
+				testSeleniumImpl.runTest(jsonObj);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "";
 	}
 }

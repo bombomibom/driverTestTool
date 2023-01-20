@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import chromeDriverTestTool.core.ServletMapping;
-import chromeDriverTestTool.item.impl.TestItemImpl;
 
 /**
  * 
@@ -38,10 +37,7 @@ public class ServletDefault extends HttpServlet {
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("seleniumGET");
-//		TestItemImpl testItemImpl = new TestItemImpl();
-//		testItemImpl.getCurrentItem();
-
+		System.out.println("Default GET");
 		
 		String uri = request.getRequestURI();
 		Object controller = mapping.controllerMapping.get(uri);
@@ -65,18 +61,12 @@ public class ServletDefault extends HttpServlet {
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 변수 저장
-//		String driverPath = request.getParameter("driverPath");
-//		String testURL = request.getParameter("testURL");
-//		String testArrStr = request.getParameter("testList");
-		
+		System.out.println("Default POST");
+
 		String uri = request.getRequestURI();
-		System.out.println("2");
 		System.out.println("uri: " + uri);
 		Object controller = mapping.controllerMapping.get(uri);
 		Method method = mapping.methodMapping.get(uri);
-		
-		
 		
 		System.out.println(controller);
 		System.out.println(method);

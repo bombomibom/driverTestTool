@@ -145,7 +145,7 @@
 	
 		$.ajax({
 	        type:"POST",
-	        url: "/seleniumItem.doAPI",
+	        url: "/setTestItem.doAPI",
 	        data: {
 	        	addItemCategory: clickedItemCategory,
 	        	addItemDataType: clickedItemDataType,
@@ -182,9 +182,7 @@
 		}
 	}
 	
-	// 230119 여기부터 진행
-	
-	// 테스트 리스트에 셀레니움 아이템을 추가한다.
+	// 테스트 리스트 아이템 추가(일단 보류! 상태값 어떤식으로 들어오는지 확인 후 반영 예정)
 	function addTestList(){
 		var str = "";
 		
@@ -197,42 +195,54 @@
 		$(".testItemList").html("");
 		$(".testItemList").append(str);
 	}
-
-	/* 
-	 * 테스트 항목을 가지고 셀레니움 테스트를 실행한다.
-	 */
-	function seleniumTest(){
+	
+	// 셀레니움 테스트
+	function doSeleniumTest(){
 		var testURL = $("#testURL").val();
 		var driverPath = $("#driverPath").val();
+		var lastTestBoardItem = "";
 		var item = {};
 		var itemList = [];
 		
-		$(".testBox").each(function(){
-			$(this).find("div").each(function(){
-				item[$(this).attr("data-category") + "Type"] = $(this).children("input").attr("data-type");
-				item[$(this).attr("data-category") + "Value"] = $(this).children("input").val();
-			})
-			itemList.push(item);
-			item = {};
-			console.log(itemList);
-		})
-		
-		$.ajax({
-	        type:"POST",
-	        url: "/seleniumTest.doAPI",
-	        data: {
-	        	testURL: testURL,
-	        	driverPath: driverPath,
-	        	testList: JSON.stringify(itemList)
-	        },
-	        success: function(data){
-	        	console.log("testSuccess");
-	        	console.log(data);
-	        },
-	        error: function(request,status,error){
-	            console.log("testFail");
-	        }
-	    })
+		if($(".testBoard").find("div").length >= 1){
+			lastTestBoardItem = $(".testBoard").find("div").last().attr("data-category");
+			
+			if(lastTestBoardItem == "target"){
+				alert("타겟에 맞는 항목 선택 후 실행해야 합니다.");
+				return false;
+			} else {
+				$(".testBoard").children().each(function(){
+					// value 가져오기 및 동작 따로따로 실행되는지 확인 필요
+					item["dataCategory"] = $(this).attr("data-category");
+					item["dataName"] = $(this).children().eq(0).attr("data-name");
+					item["dataText"] = $(this).children().eq(0).text();
+					
+					itemList.push(item);
+					item = {};
+					console.log(itemList);
+				})
+				
+				$.ajax({
+			        type:"POST",
+			        url: "/doSeleniumTest.doAPI",
+			        data: {
+			        	testURL: testURL,
+			        	driverPath: driverPath,
+			        	testList: JSON.stringify(itemList)
+			        },
+			        success: function(data){
+			        	console.log("testSuccess");
+			        	console.log(data);
+			        },
+			        error: function(request,status,error){
+			            console.log("testFail");
+			        }
+			    })
+			}
+			
+		} else {
+			alert("실행할 항목이 없습니다.");
+		}
 	}
 	
 </script>
@@ -320,6 +330,7 @@
 				        							<div data-type="text" data-name="name" onclick="appendTestItem($(this));">name</div>
 				        							<div data-type="text" data-name="tagName" onclick="appendTestItem($(this));">tagName</div>
 				        							<div data-type="text" data-name="linkText" onclick="appendTestItem($(this));">linkText</div>
+				        							<div data-type="text" data-name="cssSelector" onclick="appendTestItem($(this));">cssSelector</div>
 				        						</li>
 				        					</ul>
 				            			</div>
@@ -463,7 +474,7 @@
                     </table>
                     <div class="btnBox">
                         <a href="">취소</a>
-                        <a href="#none" onclick="seleniumTest();">실행</a>
+                        <a href="#none" onclick="doSeleniumTest();">실행</a>
                     </div>
                 </div>
             </div>

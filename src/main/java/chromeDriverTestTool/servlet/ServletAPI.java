@@ -35,7 +35,6 @@ public class ServletAPI extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("API GET");
-		
 	}
 	
 	/**
@@ -44,11 +43,6 @@ public class ServletAPI extends HttpServlet {
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 변수 저장
-//		String driverPath = request.getParameter("driverPath");
-//		String testURL = request.getParameter("testURL");
-//		String testArrStr = request.getParameter("testList");
-		
 		System.out.println("API POST");
 		
 		String uri = request.getRequestURI();
