@@ -279,7 +279,7 @@ public class SeleniumServiceImpl implements SeleniumService {
 		// - options.setExperimentalOption("mobileEmulation", map);
 		// 참고 url: http://dbcafe.co.kr/wiki/index.php/%EC%9E%90%EB%B0%94_%ED%81%AC%EB%A1%A4%EB%A7%81#.EC.97.98.EB.A6.AC.EB.A8.BC.ED.8A.B8_.EC.B2.B4.ED.81.AC_.ED.95.98.EA.B8.B0
 		
-		// 그외 참고 url: https://testmanager.tistory.com/115
+		// 그외 참고 url: https://dev.to/composite/-50a1
 		
 		// 동작들 찾아서 정리 & vo 저장 & 화면 뿌리기 + selenium IDE 참고
 		// 화면에 뿌린 거 가져오는 것까지 진행 후 run() 부분 어떻게 처리할지 고민

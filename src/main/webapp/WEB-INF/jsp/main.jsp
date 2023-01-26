@@ -216,7 +216,7 @@
 					// value 가져오기 및 동작 따로따로 실행되는지 확인 필요
 					item["dataCategory"] = $(this).attr("data-category");
 					item["dataName"] = $(this).children().eq(0).attr("data-name");
-					item["dataText"] = $(this).children().eq(0).text();
+					item["dataText"] = $(this).children().eq(0).val();
 					
 					itemList.push(item);
 					item = {};
@@ -341,18 +341,21 @@
 				           							<h4>클릭</h4>
 					           						<div data-type="button" data-name="clickEnter" onclick="appendTestItem($(this));">ENTER</div>
 					           						<div data-type="button" data-name="clickESC" onclick="appendTestItem($(this));">ESC</div>
+					           						<div data-type="button" data-name="clickDefault" onclick="appendTestItem($(this));">클릭</div>
 					           						<div data-type="button" data-name="clickDouble" onclick="appendTestItem($(this));">더블클릭</div>
 				           							<div data-type="button" data-name="clickRight" onclick="appendTestItem($(this));">우클릭</div>
+				           						</li>
+				           						<li class="select">
+				           							<h4>선택</h4>
+				           							<div data-type="button" data-name="selCheckBox" onclick="appendTestItem($(this));">체크박스 선택</div>
+				           							<div data-type="button" data-name="deSelCheckBox" onclick="appendTestItem($(this));">체크박스 선택해제</div>
 				           						</li>
 				           						<li class="input">
 				           							<h4>입력</h4>
 				           							<div data-type="text" data-name="inputSearchKeyword" onclick="appendTestItem($(this));">검색어</div>
 					           						<div data-type="text" data-name="inputValue" onclick="appendTestItem($(this));">값(value)</div>
-					           						<div data-type="text" data-name="inputDropDownText" onclick="appendTestItem($(this));">선택할 드롭다운 텍스트</div>
 					           						<div data-type="text" data-name="inputDropDownIndex" onclick="appendTestItem($(this));">선택할 드롭다운 인덱스</div>
-					           						<div data-type="text" data-name="inputDropDownClearText" onclick="appendTestItem($(this));">선택취소할 드롭다운 텍스트</div>
-					           						<div data-type="text" data-name="inputDropDownClearValue" onclick="appendTestItem($(this));">선택취소할 드롭다운 값(value)</div>
-					           						<div data-type="text" data-name="inputCheckIndex" onclick="appendTestItem($(this));">선택할 체크박스 인덱스</div>
+					           						<div data-type="text" data-name="inputDropDownClearIndex" onclick="appendTestItem($(this));">선택취소할 드롭다운 인덱스</div>
 					           						<div data-type="text" data-name="inputScrollElement" onclick="appendTestItem($(this));">최상단부터 스크롤이 멈추는 지점(element)</div>
 				           							<div data-type="text" data-name="inputAttr" onclick="appendTestItem($(this));">추출할 엘리먼트 속성</div>
 				           						</li>
@@ -375,14 +378,14 @@
 					           						<div data-type="button" data-name="isEnabled" onclick="appendTestItem($(this));">element 활성화</div>
 												</li>
 												<li class="dragAndDrop">
-													<h4>드래그 앤 드롭</h4>
+													<h4>드래그 앤 드롭(둘 다 지정)</h4>
 					           						<div data-type="button" data-name="dragElement" onclick="appendTestItem($(this));">드래그</div>
 					           						<div data-type="button" data-name="dropElement" onclick="appendTestItem($(this));">드롭</div>
 												</li>
 												<li class="keyBoard">
 													<h4>키보드 이벤트</h4>
-					           						<div data-type="button" data-name="keyUp" onclick="appendTestItem($(this));">키보드에서 손 뗐을 때</div>
-					           						<div data-type="button" data-name="keyDown" onclick="appendTestItem($(this));">키보드를 눌렀을 때</div>
+					           						<div data-type="choose" data-name="keyUp" onclick="appendTestItem($(this));">키보드에서 손 뗐을 때</div>
+					           						<div data-type="choose" data-name="keyDown" onclick="appendTestItem($(this));">키보드를 눌렀을 때</div>
 												</li>
 				           						<li class="etc">
 				           							<h4>기타</h4>
@@ -403,16 +406,9 @@
 				           							<div data-type="button" data-name="closeThisTab" onclick="appendTestItem($(this));">현재 창 닫기</div>
 				           							<div data-type="button" data-name="closeAllTab" onclick="appendTestItem($(this));">전체 창 닫기</div>
 				           							<div data-type="button" data-name="showMaximize" onclick="appendTestItem($(this));">최대 크기로 창 열기</div>
-				           							<div data-type="button" data-name="showMinimize" onclick="appendTestItem($(this));">최소 크기로 창 열기</div>
 				           							<div data-type="button" data-name="navigateBack" onclick="appendTestItem($(this));">뒤로가기</div>
 				           							<div data-type="button" data-name="navigateForward" onclick="appendTestItem($(this));">앞으로가기</div>
 				           							<div data-type="button" data-name="navigateRefresh" onclick="appendTestItem($(this));">새로고침</div>
-				           						</li>
-				           						<li class="driverOption">
-				           							<h4>드라이버 옵션</h4>
-				           							<div data-type="button" data-name="optDisablePopupBlocking" onclick="appendTestItem($(this));">팝업 무시</div>
-				           							<div data-type="button" data-name="optDisableDefaultApps" onclick="appendTestItem($(this));">기본 앱 미사용</div>
-				           							<div data-type="button" data-name="optMobileEmulation" onclick="appendTestItem($(this));">모바일 모드로 확인</div>
 				           						</li>
 				           						<li class="iframeAndWindow">
 				           							<h4>iFrame & window</h4>
@@ -445,7 +441,7 @@
 				           						</li>
 				           						<li class="screenshot">
 				           							<h4>스크린샷</h4>
-				           							<div data-type="button" data-name="screenshot" onclick="appendTestItem($(this));">스크린샷</div>
+				           							<div data-type="text" data-name="screenshot" onclick="appendTestItem($(this));">스크린샷</div>
 				           						</li>
 				           						<li class="cookie">
 				           							<h4>쿠키</h4>
