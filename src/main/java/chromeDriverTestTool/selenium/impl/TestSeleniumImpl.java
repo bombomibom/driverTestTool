@@ -12,7 +12,6 @@ import chromeDriverTestTool.item.VO.TestItemVO;
 import chromeDriverTestTool.selenium.service.TestSelenium;
 
 public class TestSeleniumImpl implements TestSelenium {
-
 	// WebDriver fields
 	WebDriver driver = new ChromeDriver();
 	String driverId = "webdriver.chrome.driver";
@@ -34,17 +33,42 @@ public class TestSeleniumImpl implements TestSelenium {
 	@Override
 	public void runTest(JSONObject jsonObj) {
 		TestItemVO item = new TestItemVO((String)jsonObj.get("dataText"), (String)jsonObj.get("dataName"), (String)jsonObj.get("dataCategory"));
-		
-		
 		System.out.println(jsonObj);
+		System.out.println(item.getDataText());
+		System.out.println(item.getDataCategory());
+		System.out.println(item.getDataName());
 		
-		
-	
-		
-		
-		
-		
+		// 아이템에 저장까지는 했고, 그 다음 실행은 어떻게?
+		// DataCategory는 안 쓸 수 있으니 일단 보류
+		// 밑에 일단은 임의로 테스트 메서드 만들기
+		if(item.getDataCategory().equals("target")) {
+			mapTarget(item.getDataName());
+		} 
 	}
+	
+	// 테스트 진행(일단 여기에다 쭉)
+	@Override
+	public void mapTarget(String target) {
+		System.out.println(target);
+		
+		switch(target) {
+		case "xPath": ;
+			break;
+		case "id": ;
+			break;
+		case "className": ;
+			break;
+		case "name": ;
+			break;
+		case "tagName": ;
+			break;
+		case "linkText": ;
+			break;
+		case "cssSelector": ;
+			break;
+		}
+	}
+	
 	
 	@Override
 	public boolean getResult() throws Exception {

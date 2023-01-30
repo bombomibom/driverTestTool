@@ -6,25 +6,6 @@ import java.util.Map;
 import chromeDriverTestTool.item.service.TestItem;
 
 public class TestItemImpl implements TestItem {
-
-	// 테스트 아이템 가져오기(DB 연동 후 진행)
-//	public JSONObject getItemList(Object fieldObj) {
-//		JSONObject jsonObj = new JSONObject();
-//
-//		for(Field field : fieldObj.getClass().getDeclaredFields()) {
-//			field.setAccessible(true);
-//			try {
-//				jsonObj.put(field.getName(), field.get(fieldObj));
-//			} catch (IllegalArgumentException e) {
-//				e.printStackTrace();
-//			} catch (IllegalAccessException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		System.out.println(jsonObj);
-//		return jsonObj;
-//	}
-
 	// 테스트 매핑 항목 가져오기
 	public Map<String, String> getTestMap(String addItemCategory, String addItemDataType, String addItemDataName, String addItemDataText, boolean existItem, String lastItem) {
 		

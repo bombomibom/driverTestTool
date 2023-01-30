@@ -63,14 +63,7 @@ public class TestToolController {
 			}
 		}
 		
-		// 3. 테스트 리스트 가져오기
-//		NeedElementsCmdVO commandVO = new NeedElementsCmdVO();
-//		TargetVO targetVO = new TargetVO();
-//		
-//		request.setAttribute("commandList", testItemImpl.getTestList(commandVO));
-//		request.setAttribute("targetList", testItemImpl.getTestList(targetVO));
 		response.setContentType("text/html;charset=UTF-8");
-		
 		fileList.clear();
 		
 		return "main";
