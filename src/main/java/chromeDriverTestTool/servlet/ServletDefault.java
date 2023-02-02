@@ -57,7 +57,6 @@ public class ServletDefault extends HttpServlet {
 	
 	/**
 	 * servlet Post 통신
-	 *
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

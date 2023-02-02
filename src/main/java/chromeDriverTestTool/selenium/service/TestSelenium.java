@@ -9,13 +9,10 @@ public interface TestSelenium {
 	// 셀레니움 실행
 	public void runTest(JSONObject jsonObj);
 	
-	// 타겟 매핑
-	public void mapTarget(String target);
-	
 	// 셀레니움 실행 결과 가져오기
 	public boolean getResult() throws Exception;
 	
 	// 성공결과 관리?
 	public void setSucceedCondition(String cond);
-
+	
 }

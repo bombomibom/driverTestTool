@@ -1,12 +1,12 @@
 package chromeDriverTestTool.selenium.impl;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
 import org.json.simple.JSONObject;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.interactions.Actions;
 
 import chromeDriverTestTool.item.VO.TestItemVO;
 import chromeDriverTestTool.selenium.service.TestSelenium;
@@ -24,6 +24,10 @@ public class TestSeleniumImpl implements TestSelenium {
 		this.testURL = testURL;
 	}
 	
+	public TestSeleniumImpl() {
+		
+	}
+	
 	@Override
 	public void connectURL() {
 		System.setProperty(driverId, driverPath);
@@ -38,37 +42,69 @@ public class TestSeleniumImpl implements TestSelenium {
 		System.out.println(item.getDataCategory());
 		System.out.println(item.getDataName());
 		
-		// 아이템에 저장까지는 했고, 그 다음 실행은 어떻게?
-		// DataCategory는 안 쓸 수 있으니 일단 보류
-		// 밑에 일단은 임의로 테스트 메서드 만들기
-		if(item.getDataCategory().equals("target")) {
-			mapTarget(item.getDataName());
-		} 
-	}
-	
-	// 테스트 진행(일단 여기에다 쭉)
-	@Override
-	public void mapTarget(String target) {
-		System.out.println(target);
-		
-		switch(target) {
-		case "xPath": ;
-			break;
-		case "id": ;
-			break;
-		case "className": ;
-			break;
-		case "name": ;
-			break;
-		case "tagName": ;
-			break;
-		case "linkText": ;
-			break;
-		case "cssSelector": ;
-			break;
+		TestSeleniumImpl testImpl = new TestSeleniumImpl();
+		System.out.println("getName()      : " + testImpl.getClass().getName());
+	    System.out.println("getSimpleName()  : " + testImpl.getClass().getSimpleName());
+	    System.out.println("===========getMethods()===========");
+	    for(Method method : testImpl.getClass().getMethods()){
+	        System.out.println("method          : " + method.getName());
+	    }
+	    System.out.println("===========getFields()===========");
+	    for(Field field : testImpl.getClass().getFields()){
+	        System.out.println("field           : " + field.getName());
+	    }
+	    
+	    Class c = TestSeleniumImpl.class;
+	    try {
+			Method m = c.getDeclaredMethod(item.getDataName());
+			System.out.println(m);
+			
+		    m = c.getDeclaredMethod("anotherMethod", int.class);
+	        System.out.println(m);
+			
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+	    
+		
+//		String functionNameA = item.getDataName();
+//		System.out.println(functionNameA);
+//		
+//		Object obj = new TestSeleniumImpl();
+//		try {
+//			Class<?> cls = Class.forName(obj.getClass().getName());
+//			System.out.println(cls);
+//			Method m = cls.getDeclaredMethod(functionNameA);
+//			System.out.println(m);
+//			m.invoke(obj);
+//		} 
+//		catch (ClassNotFoundException e) {
+//			System.out.println("ClassNotFoundException from Class.forName()");
+//		}
+//		catch (NoSuchMethodException e) {
+//			System.out.println("NoSuchMethodException from getDeclaredMethod()");
+//		}
+//		catch (InvocationTargetException e) {
+//			System.out.println("InvocationTargetExceptionn from invoke()");v
+//		}
+//		catch (IllegalAccessException e) {
+//			System.out.println("IllegalAccessException from invoke()");
+//		}
+//		finally {
+//			System.out.println("functionA test success!");
+//		}
+		
 	}
 	
+	// 일단 테스트 항목 아래에 쭉 늘어놓자!
+	public void targetXpath(String target) {
+		driver.findElement(By.xpath(target));
+		System.out.println("ee");
+	} 
 	
 	@Override
 	public boolean getResult() throws Exception {

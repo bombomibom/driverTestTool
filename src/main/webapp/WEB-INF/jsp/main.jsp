@@ -324,7 +324,7 @@
 				            				<h3>1. 타겟</h3>
 				        					<ul class="target">
 				        						<li class="target">
-				        							<div data-type="text" data-name="xPath" onclick="appendTestItem($(this));">xPath</div>
+				        							<div data-type="text" data-name="targetXpath" onclick="appendTestItem($(this));">xPath</div>
 				        							<div data-type="text" data-name="className" onclick="appendTestItem($(this));">className</div>
 				        							<div data-type="text" data-name="id" onclick="appendTestItem($(this));">id</div>
 				        							<div data-type="text" data-name="name" onclick="appendTestItem($(this));">name</div>
