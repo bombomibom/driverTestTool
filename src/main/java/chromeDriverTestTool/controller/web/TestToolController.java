@@ -125,8 +125,7 @@ public class TestToolController {
 		String testListStr = request.getParameter("testList");
 		
 		// step2: 테스트 세팅 및 크롬 접속
-		TestSeleniumImpl testSeleniumImpl = new TestSeleniumImpl(driverPath, testURL);
-		testSeleniumImpl.connectURL();
+		TestSeleniumImpl testSeleniumImpl = new TestSeleniumImpl(driverPath,testURL);
 		
 		// step3: 테스트 실행
 		JSONParser parser = new JSONParser();
