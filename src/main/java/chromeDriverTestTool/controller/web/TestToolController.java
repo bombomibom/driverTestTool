@@ -23,7 +23,6 @@ public class TestToolController {
 	private static ArrayList<File> fileList = new ArrayList<File>(); // 싱글톤
 	private static TestItemImpl testItemImpl = new TestItemImpl();
 	
-	
 	public String main(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		
 		// 1. 크롬 드라이버 크롤링 
@@ -124,23 +123,28 @@ public class TestToolController {
 		String testURL = request.getParameter("testURL");
 		String testListStr = request.getParameter("testList");
 		
-		// step2: 테스트 세팅 및 크롬 접속
-		TestSeleniumImpl testSeleniumImpl = new TestSeleniumImpl(driverPath,testURL);
+		// step2: 셀레니움 생성자 정보 저장 및 접속
+		TestSeleniumImpl testSeleniumImpl = new TestSeleniumImpl(driverPath, testURL);
+		System.out.println("driverPath: " + driverPath);
+		System.out.println("testURL: " + testURL);
+		System.out.println("testListStr: " + testListStr);
+		testSeleniumImpl.connectDriver();
 		
-		// step3: 테스트 실행
+		// step3: 셀레니움 실행
 		JSONParser parser = new JSONParser();
 		Object obj = parser.parse(testListStr);
 		JSONArray jsonArray = (JSONArray)obj;
-	
-		try {
-			for(int i=0;i<jsonArray.size();i++){
-				JSONObject jsonObj = (JSONObject)jsonArray.get(i);
-				testSeleniumImpl.runTest(jsonObj);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		testSeleniumImpl.runTest(jsonArray);
 		
+//		try {
+//			for(int i=0;i<jsonArray.size();i++){
+//				JSONObject jsonObj = (JSONObject)jsonArray.get(i);
+//				testSeleniumImpl.runTest(jsonObj);
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+	
 		return "";
 	}
 }
